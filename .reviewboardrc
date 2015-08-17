@@ -1,0 +1,3 @@
+REVIEWBOARD_URL = "http://codeqa-rb.alipay.net/"
+REPOSITORY = "esl-solutions"
+BRANCH = "master"
