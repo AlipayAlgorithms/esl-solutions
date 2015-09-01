@@ -1,10 +1,20 @@
-# Overview of Supervised Learning
-
 ---
+title: "Overview of Supervised Learning"
+output:
+  html_document:
+    toc: yes
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+## Note [p:12 para:2 eq:2.5] derivative-scalar-by-vector
+
 Item | Description
 --- | ---
-Note | [p:12] [para:2] [eq:2.5]
-Content | derivative-scalar-by-vector
 Authors | [PengjuYan](https://github.com/PengjuYan)
 Date | 2015/8/18
 Reference | [Wikipedia: Matrix calculus][wikipedia-matrix-calculus]
@@ -18,17 +28,18 @@ There are 2 _flavors_ of definition of **the derivative of a scalar by a vector*
 
 This book follows the latter, i.e., the column vector form:
 
+$$
 \begin{equation}
 \frac{\partial{y}}{\partial{\mathbf{x}}} = \begin{bmatrix} \frac{\partial y}{\partial x_1} \\ \frac{\partial y}{\partial x_2} \\ \vdots \\ \frac{\partial y}{\partial x_n} \end{bmatrix}
 \end{equation}
+$$
 
 This can also be verified by equation (3.14) on page 45.
 
----
+## Note [p:15 para:-2] knn-degrees-of-freedom
+
 Item | Description
 --- | ---
-Note | [p:15] [para:-2]
-Content | knn-degrees-of-freedom
 Authors | [PengjuYan](https://github.com/PengjuYan)
 Date | 2015/8/20
 Reference | [Wikipedia: Degrees of freedom][wikipedia-degrees-of-freedom]
@@ -41,15 +52,37 @@ In the paragraph of interest, it is said that:
 
 In order to understand this paragraph quantitatively, we may need to refer to [Wikipedia: Degrees of freedom][wikipedia-degrees-of-freedom] and equation (3.50) on page 68. In many regression tasks, including $k$-nearest-neighbors, the prediction on training data can be given by a linear combination of target values of the training samples:
 
+$$
 \begin{equation}
 \hat{\mathbf{y}} = \mathbf{H}\mathbf{y}
 \end{equation}
+$$
 
 A general definition of the **effective degrees of freedom** is given by the trace of the **hat** matrix $\mathbf{H}$:
 
+$$
 \begin{equation}
 \mathrm{tr}(\mathbf{H}) = \sum_{i} h_{ii}
 \end{equation}
+$$
 
 In a $k$-nearest-neighbor fit, each row of the hat matrix $\mathbf{H}$ contains exactly $k$ non-zero cells with the value of $1/k$, and the diagonal cell is always $1/k$ because the nearest neighbor of each data sample is of course itself. Therefore, the trace of the hat matrix is naturally $N/k$.
+
+## Note [p:16 para:-1] - [p:17 para:1] simulated-gaussian-mixture
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/9/1
+Reference | [Wikipedia: Mixture model][wikipedia-mixture-model]
+
+[wikipedia-mixture-model]: https://en.wikipedia.org/wiki/Mixture_model
+
+In section 2.3, the training data were _simulated from a model somewhere between the two, but closer to Scenario 2_.
+
+> **Scenario 1**: The training data in each class were generated from bivariate Gaussian distributions with uncorrelated components and different means.
+
+> **Scenario 2**: The training data in each class came from a mixture of 10 low-variance Gaussian distributions, with individual means themselves distributed as Gaussian.
+
+The sampling procedure described in the paragraph of interest **follows** the definition of Gaussian mixture models of no doubt. The difference between that procedure and Scenario 2 lies in the fact that the two means of the Gaussian distributions from which the individual means of the two classes were drawn **are different**, which are $(1, 0)^T$ and $(0, 1)^T$, respectively. In Scenario 2 however, the individual means follow the same Gaussian distribution. Therefore, the separability of the simulated data lies between Scenario 1 and Scenario 2.
 
