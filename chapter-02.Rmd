@@ -11,6 +11,8 @@ MathJax.Hub.Config({
 });
 </script>
 
+---
+
 ## Note [p:12 para:2 eq:2.5] derivative-scalar-by-vector
 
 Item | Description
@@ -35,6 +37,8 @@ $$
 $$
 
 This can also be verified by equation (3.14) on page 45.
+
+---
 
 ## Note [p:15 para:-2] knn-degrees-of-freedom
 
@@ -68,6 +72,8 @@ $$
 
 In a $k$-nearest-neighbor fit, each row of the hat matrix $\mathbf{H}$ contains exactly $k$ non-zero cells with the value of $1/k$, and the diagonal cell is always $1/k$ because the nearest neighbor of each data sample is of course itself. Therefore, the trace of the hat matrix is naturally $N/k$.
 
+---
+
 ## Note [p:16 para:-1] - [p:17 para:1] simulated-gaussian-mixture
 
 Item | Description
@@ -86,3 +92,36 @@ In section 2.3, the training data were _simulated from a model somewhere between
 
 The sampling procedure described in the paragraph of interest **follows** the definition of Gaussian mixture models of no doubt. The difference between that procedure and Scenario 2 lies in the fact that the two means of the Gaussian distributions from which the individual means of the two classes were drawn **are different**, which are $(1, 0)^T$ and $(0, 1)^T$, respectively. In Scenario 2 however, the individual means follow the same Gaussian distribution. Therefore, the separability of the simulated data lies between Scenario 1 and Scenario 2.
 
+---
+
+## Ex 2.1 output-class-index
+
+Item | Description
+--- | ---
+Authors | [justdark](https://github.com/justdark)
+Date | 2015/9/5
+
+**Ex. 2.1** Suppose each of $K$-classes has an associated target $t_{k}$, which is a vector of all zeros, except a one in the $k$th position. Show that classifying to the largest element of $\hat{y}$ amounts to choosing the closest target, $\mathrm{min}_{k}\left|\left|t_{k} - \hat{y}\right|\right|$, if the elements of $\hat{y}$ sum to one.
+
+**Proof**
+
+According to the description, what we need to prove is:
+$$
+\mathop{\mathrm{argmax}}_{k}\left(\hat{y}_k\right)=\mathop{\mathrm{argmin}}_{k}(\left|\left|t_{k}-\hat{y}\right|\right|)
+$$
+
+So we have:
+$$
+\begin{align}
+\mathop{\mathrm{argmin}}_{k}\left(\left|\left|t_{k}-\hat{y}\right|\right|\right) &=  \mathop{\mathrm{argmin}}_{k}\left(t_{k}-\hat{y}\right)^2 \\
+&= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}-\hat{y}_i\right]^2 \\
+&= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}^2+\hat{y}_i^2-2\left(t_{k}\right)_{i}\hat{y}_i\right]\\
+&= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}^2-2\left(t_{k}\right)_{i}\hat{y}_i\right] \\
+&= \mathop{\mathrm{argmin}}_{k} \left[\sum_{i=1}^K\left(t_{k}\right)_{i}^2-\sum_{i=1}^K2\left(t_{k}\right)_{i}\hat{y}_i\right] \\
+&= \mathop{\mathrm{argmin}}_{k} \left[1-\sum_{i=1}^K2\left(t_{k}\right)_{i}\hat{y}_i\right]\\
+&= \mathop{\mathrm{argmax}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}\hat{y}_i\right]\\
+&= \mathop{\mathrm{argmax}}_{k} \left(\hat{y}_k\right)
+\end{align}
+$$
+
+As you can see, the last condition that the elements of $\hat{y}$ sum to one doesn't appear in our proof, because it's unnecessary for the conclusion.
