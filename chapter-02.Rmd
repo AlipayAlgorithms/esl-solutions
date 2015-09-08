@@ -196,3 +196,68 @@ Pr\left(X = x\left|\right.\mathcal{G}_{k}\right) = \frac{1}{10}\sum_{t=1}^{10}f\
 \end{align}
 $$
 This equation is more complicated than scenario 1, with the sum over $exp$ function, so the boundary is nonlinear as plot on Figure 2.5.
+
+## Ex. 2.3 median-distance-of-sphere
+
+Item | Description
+--- | ---
+Authors | [maorenxin](https://github.com/maorenxin)
+Date | 2015/9/8
+Reference | [Wikipedia: Volume of the n-sphere](https://en.wikipedia.org/wiki/Sphere)
+
+
+**Ex. 2.3** Derive equation (2.24).
+$$
+\begin{equation}
+d(p, N) = \left(\ 1- \frac{1}{2}^{1/N} \right)^{1/p}
+\end{equation}
+$$
+
+**Proof**
+
+First of all, let $r$ be the median distance from the origin to the closest data point. Then
+$$
+\begin{equation}
+P(\text{All } N \text{ points are further than r from the origin}) = \frac{1}{2}
+\end{equation}
+$$
+
+Since points $x_i$ are independently distributed, which implies that
+$$
+\begin{equation}
+\frac{1}{2} = \prod_{i=1}^N P\left(\left\| x_i \right\| > r\right)
+\end{equation}
+$$
+
+and as points $x_i$ are uniformly distributed in the unit ball, we have
+
+$$
+\begin{align}
+P \left(\left\| x_i \right\| > r \right) &= 1- P\left(\left\| x_i \right\| \leq r \right)\\
+&= 1 - \frac{V_p(r)}{V_p(R)}\\
+&= 1- r^p
+\end{align}
+$$
+and $V$ represents Volume.
+
+Putting all together, we obtain that
+$$
+\begin{equation}
+\frac{1}{2}=\left(1-r^p \right)^N
+\end{equation}
+$$
+
+and solving for $r$, we will have
+$$
+\begin{equation}
+d(p, N) = \left(\ 1- \frac{1}{2}^{1/N} \right)^{1/p}
+\end{equation}
+$$
+
+For the sphere volume of $p$ dimension, we can refer to [Volume of the n-sphere](https://en.wikipedia.org/wiki/Sphere) for more detail. Here we demonstrate the formula:
+$$
+\begin{align}
+V_p({R}) = \frac{R^p}{n} \frac{2\pi^{p/2}}{\Gamma \left(n/2\right)}\\
+\Gamma(n/2) = \frac{\left(n-2\right)!!\sqrt{\pi}}{2^{\left(n-1\right)/2}}
+\end{align}
+$$
