@@ -107,7 +107,9 @@ Date | 2015/9/5
 
 According to the description, what we need to prove is:
 $$
+\begin{equation}
 \mathop{\mathrm{argmax}}_{k}\left(\hat{y}_k\right)=\mathop{\mathrm{argmin}}_{k}(\left|\left|t_{k}-\hat{y}\right|\right|)
+\end{equation}
 $$
 
 So we have:
@@ -125,3 +127,72 @@ $$
 $$
 
 As you can see, the last condition that the elements of $\hat{y}$ sum to one doesn't appear in our proof, because it's unnecessary for the conclusion.
+
+---
+
+## Ex. 2.2 bayes-decision-boundary
+
+Item | Description
+--- | ---
+Authors | [justdark](https://github.com/justdark)
+Date | 2015/9/8
+
+**Ex. 2.2** Show how to compute the Bayes decision boundary for the simulation example in Figure 2.5.
+
+**Proof**
+
+From the description we can conclude that the boundary's property:
+$$
+\begin{equation}
+Pr\left(\mathcal{G}_{orange}\left|\right.X=x\right)=Pr\left(\mathcal{G}_{blue}\left|\right.X=x\right)
+\end{equation}
+$$
+where x is the point on the boundary. By the Bayes equation:
+$$
+\begin{equation}
+Pr\left(\mathcal{G}_{k}\left|\right.X = x\right) = \frac{Pr\left(X = x\left|\right.\mathcal{G}_{k}\right)Pr\left(\mathcal{G}_{k}\right)}{Pr\left(X=x\right)}
+\end{equation}
+$$
+
+Because the $Count\left(orange\right)=Count\left(blue\right)$, so
+$$
+\begin{equation}
+Pr\left(\mathcal{G}_{orange}\right)=Pr\left(\mathcal{G}_{blue}\right)
+\end{equation}
+$$
+
+We can simplify the boundary's property, it's also **the solution of this exercise**:
+$$
+\begin{align}
+Pr\left(X = x\left|\right.\mathcal{G}_{orange}\right)&=Pr\left(X = x\left|\right.\mathcal{G}_{blue}\right)
+\end{align}
+$$
+
+How to calculate the $Pr\left(X = x\left|\right.\mathcal{G}_{k}\right)$ ?
+
+For the **Scenario 1**, if the $\mathcal{G}$ is simulated from two bivariate Guassian distribution, we can use the **probability density function (pdf)** of Guassian distribution:
+$$
+\begin{align}
+f\left(x\right)=\frac{1}{\sqrt{2\pi } \sigma}e^{-\frac{\left(x-\mu \right)^{2} }{2\sigma ^{2} }}
+\end{align}
+$$
+Because the $\sigma$ is same for all class, so the boundary is actually **midperpendicular** of line segment from $\mu_{orange}$ to $\mu_{blue}$.
+
+For the **Scenario 2**, each class, we first generate 10 points as the 10 new Guassian distributions' mean, then each distribution generates 10 points as the results, finally we got 100 points for the class.
+
+Use $\left(m_k\right)_t,t<10$ as the results of the first step for class $k$.
+The probability that a point is generate from a given mean $\left(m_k\right)_t$ is:
+$$
+\begin{align}
+f\left(x,\left(m_k\right)_t\right)=\frac{1}{\sqrt{2\pi } \sigma^{'}}e^{-\frac{\left(x-\left(m_k\right)_t \right)^{2} }{2\sigma^{'2} } }
+\end{align}
+$$
+(add apostrophe on the $\sigma$ to distinguish it from basic one)
+
+So we can define the probability that the point is generate from the $k$th class as:
+$$
+\begin{align}
+Pr\left(X = x\left|\right.\mathcal{G}_{k}\right) = \frac{1}{10}\sum_{t=1}^{10}f\left(x,\left(m_k\right)_t\right)
+\end{align}
+$$
+This equation is more complicated than scenario 1, with the sum over $exp$ function, so the boundary is nonlinear as plot on Figure 2.5.
