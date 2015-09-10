@@ -94,7 +94,29 @@ The sampling procedure described in the paragraph of interest **follows** the de
 
 ---
 
-## Ex 2.1 output-class-index
+## Note [p:23 para:1] high-dimension-extrapolation
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/9/10
+Reference | [Wikipedia: Extrapolation][wikipedia-extrapolation]
+
+[wikipedia-extrapolation]: https://en.wikipedia.org/wiki/Extrapolation
+
+In the paragraph of interest, it is said that:
+
+> Hence most data points are closer to the boundary of the sample space than to any other data point. The reason that this presents a problem is that prediction is much more difficult near the edges of the training sample. One must extrapolate from neighboring sample points rather than interpolate between them.
+
+Interpolation and extrapolation correspond to predictions inside and at the boundary of the training region, respectively.
+
+Let's first illustrate the difference in the 1-dimensional space. When we need to predict the $y$ value given a test data point $x$ _inside_ the training region, then we can find approximately $k/2$ training data points at both left and right sides of $x$, then we can predict $y$ by _interpolating_ among the $k$ surrounding training data points. However, when $x$ is at the left _boundary_ of the training region, then we may find that only $k/10$ of the $k$-nearest neighbors are at the left side of $x$, and the rest $9k/10$ are at the right side. Or even more unfortunetaly, all the $k$-nearest neighbors could be at the right side of $x$. Therefore, we are actually _extrapolating_ from the neighbors in order to predict $y$, because $x$ is not well _embraced_ by the $k$-nearest neighbors.
+
+In high dimensional spaces, most points appear at the boundaries. For each $x$ we want to predict, it is extremely highly possible that $x$ lies at the boundary of the training region. Most of the $k$-nearest neighbors of $x$ are just at one side of $x$ hence are not embracing $x$ well. That comes the sentence **"One must extrapolate from neighboring sample points rather than interpolate between them"**.
+
+---
+
+## Ex. 2.1 output-class-index
 
 Item | Description
 --- | ---
