@@ -197,6 +197,8 @@ Pr\left(X = x\left|\right.\mathcal{G}_{k}\right) = \frac{1}{10}\sum_{t=1}^{10}f\
 $$
 This equation is more complicated than scenario 1, with the sum over $exp$ function, so the boundary is nonlinear as plot on Figure 2.5.
 
+---
+
 ## Ex. 2.3 median-distance-of-sphere
 
 Item | Description
@@ -261,3 +263,72 @@ V_p({R}) = \frac{R^p}{n} \frac{2\pi^{p/2}}{\Gamma \left(n/2\right)}\\
 \Gamma(n/2) = \frac{\left(n-2\right)!!\sqrt{\pi}}{2^{\left(n-1\right)/2}}
 \end{align}
 $$
+
+---
+
+## Ex. 2.6 weighted-least-squares-problem
+
+Item | Description
+--- | ---
+Authors | [xdwangkai](https://github.com/xdwangkai)
+Date | 2015/9/9
+Reference | [Researchgate: A Solution Manual and Notes for: The Elements of Statistical Learning](http://www.researchgate.net/publication/237116664_A_Solution_Manual_and_Notes_for_the_Text_The_Elements_of_Statistical_Learning)
+
+**Ex. 2.6** Consider a regression problem with inputs $x_i$ and outputs $y_i$, and a parameterized model $f_\theta{(x)}$ to be fit by least squares. Show that if there are observations with _tied_ or _identical_ values of $x$, then the fit can be obtained from a  reduced weighted least squares problem.
+
+**Proof**
+
+To fit the model $f_\theta{(x)}$ by least squares, we minimize
+$$
+\begin{equation}
+RSS(\theta)=\sum_{k=1}^N\left(y_k-f_\theta(x_k)\right)^2
+\label{eq1}
+\end{equation}
+$$
+as a function of $\theta$.
+
+As _reducible error_ and _irreducible error_ exist, even the _same_ input value of $x$ generate _different_ outputs value of $y$. Denote by $N_u$ the number of _unique_ inputs $x$, and assume that the $i$th $x$ will give $n_i$ different $y$, denote by $y_{ij}$, $1\le j\le n_i$. Rewrite Eq. $\eqref{eq1}$ as
+$$
+\begin{equation}
+RSS(\theta)=\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}\left(y_{ij}-f_\theta(x_i)\right)^2.
+\label{eq2}
+\end{equation}
+$$
+
+By expanding the quadratic in Eq. $\eqref{eq2}$, we have
+$$
+\begin{align}
+RSS(\theta)&= \sum_{i=1}^{N_u}\sum_{j=1}^{n_i}\left(y_{ij}^2-2f_\theta(x_i)y_{ij}+f_\theta(x_i)^2\right)\\
+&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta(x_i)\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}\right)+f_\theta(x_i)^2\right)
+\label{eq3}
+\end{align}
+$$
+
+Now we get the _weighted_ item $n_i$. Next, we will rewrite the expressions in the bracket to be consistent with Eq. $\eqref{eq1}$.
+
+In Eq. $\eqref{eq3}$ we notice the term $\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$, which means the average of all responses $y$ resulting from the same input $x_i$. To be briefly expressed, we define $\bar{y_i}=\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$ and rewrite Eq. $\eqref{eq3}$ as
+$$
+\begin{align}
+RSS(\theta)&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta(x_i)\bar{y_i}+f_\theta(x_i)^2\right)\\
+&= \sum_{i=1}^{N_u}n_i\left(\bar{y_i}^2-2f_\theta(x_i)\bar{y_i}+f_\theta(x_i)^2\right)+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y_i}^2}\\
+&= \sum_{i=1}^{N_u}n_i\left(\bar{y_i}-f_\theta(x_i)\right)^2+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y_i}^2}
+\label{eq4}
+\end{align}
+$$
+
+Once we get the measurements, i.e., the inputs $x_i$ and outputs $y_i$, the expression $\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y_i}^2}$ in Eq. $\eqref{eq4}$ won't change. Thus minimizing Eq. $\eqref{eq1}$ with respect to $\theta$ is equivalent to minimizing:
+$$
+\begin{equation}
+RSS(\theta)=\sum_{i=1}^{N_u}n_i\left(\bar{y_i}-f_\theta(x_i)\right)^2
+\end{equation}
+\label{eq5}
+$$
+
+Now we compare Eq. $\eqref{eq5}$ with Eq. $\eqref{eq1}$:
+
+1. The number of items in Eq. $\eqref{eq5}$ is $N_u$, which is less than the number of inputs value $N$ in Eq. $\eqref{eq1}$. So this problem can be regarded as a _reduced_ one.
+
+2. Each residual error is weighted by $n_i$ in Eq. $\eqref{eq5}$, so this is a _weighted_ least squares problem.
+
+Therefore, the fit of parameterized model $f_\theta{(x)}$ can be obtained from a  reduced weighted least squares problem.
+
