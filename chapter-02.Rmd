@@ -115,7 +115,7 @@ $$
 So we have:
 $$
 \begin{align}
-\mathop{\mathrm{argmin}}_{k}\left(\left|\left|t_{k}-\hat{y}\right|\right|\right) &=  \mathop{\mathrm{argmin}}_{k}\left(t_{k}-\hat{y}\right)^2 \\
+\mathop{\mathrm{argmin}}_{k}\left(\left|\left|t_{k}-\hat{y}\right|\right|\right) &=  \mathop{\mathrm{argmin}}_{k}\left\|t_{k}-\hat{y}\right\|^2 \\
 &= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}-\hat{y}_i\right]^2 \\
 &= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}^2+\hat{y}_i^2-2\left(t_{k}\right)_{i}\hat{y}_i\right]\\
 &= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}^2-2\left(t_{k}\right)_{i}\hat{y}_i\right] \\
@@ -173,30 +173,30 @@ How to calculate the $Pr\left(X = x\left|\right.\mathcal{G}_{k}\right)$ ?
 For the **Scenario 1**, if the $\mathcal{G}$ is simulated from two bivariate Guassian distribution, we can use the **probability density function (pdf)** of Guassian distribution:
 $$
 \begin{align}
-f\left(x\right)=\frac{1}{\sqrt{2\pi } \sigma}e^{-\frac{\left(x-\mu \right)^{2} }{2\sigma ^{2} }}
+f\left(x\right)=\frac{1}{\sqrt{\left(2\pi\right)^{2}\left|\Sigma\right|}}\exp\left(-\frac{1}{2}({x}-{\mu})^\mathrm{T}{\Sigma}^{-1}({x}-{\mu})\right)
 \end{align}
 $$
+where $\left|\Sigma\right|$ is the determinant of $\Sigma$
 Because the $\sigma$ is same for all class, so the boundary is actually **midperpendicular** of line segment from $\mu_{orange}$ to $\mu_{blue}$.
 
-For the **Scenario 2**, each class, we first generate 10 points as the 10 new Guassian distributions' mean, then each distribution generates 10 points as the results, finally we got 100 points for the class.
+For a more complicated scenario which generate the data in Figure 2.5, each class, we first generate 5 points as the 5 new Guassian distributions' mean, then each distribution generates 20 points as the results, finally we got 100 points for the class.
 
-Use $\left(m_k\right)_t,t<10$ as the results of the first step for class $k$.
+Use $\left(m_k\right)_t,t\le5$ as the results of the first step for class $k$.
 The probability that a point is generate from a given mean $\left(m_k\right)_t$ is:
 $$
 \begin{align}
-f\left(x,\left(m_k\right)_t\right)=\frac{1}{\sqrt{2\pi } \sigma^{'}}e^{-\frac{\left(x-\left(m_k\right)_t \right)^{2} }{2\sigma^{'2} } }
+f\left(x,\left(m_k\right)_t\right)=\frac{1}{\sqrt{\left(2\pi\right)^{2}\left|\Sigma^{'}\right|}}\exp\left(-\frac{1}{2}\left[{x}-{\left(m_k\right)_t}\right]^\mathrm{T}{\Sigma^{'}}^{-1}\left[{x}-{\left(m_k\right)_t}\right]\right)
 \end{align}
 $$
-(add apostrophe on the $\sigma$ to distinguish it from basic one)
+(add apostrophe on the $\Sigma$ to distinguish it from basic one)
 
 So we can define the probability that the point is generate from the $k$th class as:
 $$
 \begin{align}
-Pr\left(X = x\left|\right.\mathcal{G}_{k}\right) = \frac{1}{10}\sum_{t=1}^{10}f\left(x,\left(m_k\right)_t\right)
+Pr\left(X = x\left|\right.\mathcal{G}_{k}\right) = \frac{1}{5}\sum_{t=1}^{5}f\left(x,\left(m_k\right)_t\right)
 \end{align}
 $$
 This equation is more complicated than scenario 1, with the sum over $exp$ function, so the boundary is nonlinear as plot on Figure 2.5.
-
 ---
 
 ## Ex. 2.3 median-distance-of-sphere
