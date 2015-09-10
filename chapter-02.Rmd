@@ -266,6 +266,176 @@ $$
 
 ---
 
+## Ex. 2.5 linear-model-bias-variance
+
+Item | Description
+--- | ---
+Authors | [squall1988](https://github.com/squall1988), [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/9/10
+Reference |[Wikipedia: Bias–variance tradeoff][wikipedia-bias-variance_tradeoff], [Wikipedia: Trace][wikipedia-trace], [Wikipedia: Quadratic form][wikipedia-quadratic-form]
+
+[wikipedia-bias-variance_tradeoff]:https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff
+[wikipedia-trace]:https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29
+[wikipedia-quadratic-form]:https://en.wikipedia.org/wiki/Quadratic_form_%28statistics%29
+
+**Ex. 2.5**
+
+\(a) Derive equation (2.27). The last line makes use of (3.8) through a
+conditioning argument.
+
+\(b) Derive equation (2.28), making use of the _cyclic_ property of the trace
+operator $\left[\mathrm{trace}\left(AB\right) = \mathrm{trace}\left(AB\right)\right]$, and its linearity (which allows us
+to interchange the order of trace and expectation).
+
+**Proof (a)**
+
+**Step a.1** Let's first prove equation (2.25) the bias-variance decomposition of mean squared error (MSE):
+
+$$
+\begin{align}
+MSE\left(x_0\right)
+&= E_{\mathcal{T}} \left[f\left(x_0\right) - \hat{y}_0\right]^2 \\
+&= E_{\mathcal{T}} \left[\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 + \left[E_{\mathcal{T}}\left(\hat{y}_0\right) - f\left(x_0\right)\right]^2 \\
+&= Var_{\mathcal{T}}\left(\hat{y}_0\right) + Bias^2\left(\hat{y}_0\right)
+\end{align}
+$$
+
+It can be shown by the following derivations:
+
+$$
+\begin{align}
+MSE\left(x_0\right)
+&= E_{\mathcal{T}} \left[\hat{y}_0 - f\left(x_0\right)\right]^2 \\
+&= E_{\mathcal{T}} \left[\left(\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right) - \left(f\left(x_0\right)- E_{\mathcal{T}}\left(\hat{y}_0\right)\right)\right]^2 \\
+&= E_{\mathcal{T}} \left[\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 -2E_{\mathcal{T}} \left[\left(\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right) \left(f\left(x_0\right) - E_{\mathcal{T}}\left(\hat{y}_0\right)\right)\right] + E_{\mathcal{T}} \left[f\left(x_0\right) - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 \\
+&= E_{\mathcal{T}} \left[\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 -2 \left(f\left(x_0\right) - E_{\mathcal{T}}\left(\hat{y}_0\right)\right) E_{\mathcal{T}} \left(\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right) + \left[f\left(x_0\right) - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 \\
+&= E_{\mathcal{T}} \left[\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 -2 \left(f\left(x_0\right) - E_{\mathcal{T}}\left(\hat{y}_0\right)\right) \times 0 + \left[f\left(x_0\right) - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 \\
+&= E_{\mathcal{T}} \left[\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 + \left[f\left(x_0\right) - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 \\
+\label{eq:ex-2.5-mse}
+&= Var_{\mathcal{T}}\left(\hat{y}_0\right) + Bias^2\left(\hat{y}_0\right)
+\end{align}
+$$
+
+Note that the bias-variance decomposition of MSE does not depend on any specific assumptions such as linear models or independence.
+
+**Step a.2** Then we show that expected prediction error (EPE) can be decomposed to the irreducible squared error $\sigma^2$ and MSE.
+
+$$
+\begin{align}
+EPE\left(x_0\right)
+&= E_{y_0|x_0}E_{\mathcal{T}} \left[y_0 - \hat{y}_0\right]^2 \\
+&= E_{y_0|x_0}E_{\mathcal{T}} \left[\left(y_0 - f\left(x_0\right)\right) - \left(\hat{y}_0- f\left(x_0\right)\right)\right]^2 \\
+&= E_{y_0|x_0}E_{\mathcal{T}} \left[y_0 - f\left(x_0\right)\right]^2 -2 E_{y_0|x_0}E_{\mathcal{T}} \left[\left(y_0 - f\left(x_0\right)\right)\left(\hat{y}_0- f\left(x_0\right)\right)\right] + E_{y_0|x_0}E_{\mathcal{T}} \left[\hat{y}_0- f\left(x_0\right)\right]^2 \\
+&= E_{y_0|x_0} \left[y_0 - f\left(x_0\right)\right]^2 -2 E_{y_0|x_0} \left(y_0 - f\left(x_0\right)\right) \times E_{\mathcal{T}} \left[\left(\hat{y}_0- f\left(x_0\right)\right)\right] + E_{\mathcal{T}} \left[\hat{y}_0- f\left(x_0\right)\right]^2 \\
+&= Var\left(y_0|x_0\right) -2 \times 0 \times E_{\mathcal{T}} \left[\left(\hat{y}_0- f\left(x_0\right)\right)\right] + MSE\left(x_0\right) \\
+&= Var\left(y_0|x_0\right) + MSE\left(x_0\right) \\
+\end{align}
+$$
+
+Also note that in the proof above, the only necessary assumption is that the mean of the noise term $\epsilon$ in $y=f\left(x\right)+\epsilon$ is $0$. We do not need any further assumptions like linear models or unbiased estimation.
+
+Finally we get the EPE equation:
+
+$$
+\begin{equation}
+\label{eq:ex-2.5-epe}
+EPE\left(x_0\right) = Var\left(y_0|x_0\right) + Var_{\mathcal{T}}\left(\hat{y}_0\right) + Bias^2\left(\hat{y}_0\right)
+\end{equation}
+$$
+
+**Step a.3** Now we need to prove equation (2.27) under the assumptions that $\epsilon$ follows $\mathcal{N}\left(0, \sigma^2\right)$, the relationship between $Y$ and $X$ is linear, and the estimator is a linear regression model.
+
+For a linear regression model, the estimated parameter is given by (see equation(3.6) on page 45):
+
+$$
+\begin{align}
+\hat{\beta}
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y} \\
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\left(\mathbf{X}\beta + \mathbf{\epsilon}\right) \\
+&= \beta + \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}
+\end{align}
+$$
+
+Then $\hat{y}_0$ is
+
+$$
+\begin{align}
+\hat{y}_0
+&= x_0^T\hat{\beta} \\
+&= x_0^T\beta + x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}
+\end{align}
+$$
+
+and $E_{\mathcal{T}}\left(\hat{y}_0\right)$ is
+
+$$
+\begin{align}
+E_{\mathcal{T}} \left(\hat{y}_0\right)
+&= E_{\mathcal{T}} \left(x_0^T\hat{\beta}\right) \\
+&= E_{\mathcal{T}} \left(x_0^T\beta\right) + E_{\mathcal{T}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}\right] \\
+&= x_0^T\beta + E_{\mathcal{X}}E_{\mathcal{\epsilon}|\mathcal{X}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}\right] \\
+&= x_0^T\beta + E_{\mathcal{X}}0 \\
+&= x_0^T\beta
+\end{align}
+$$
+
+Now look at bias and variance of $\hat{y}_0$:
+
+$$
+\begin{align}
+Bias^2\left(\hat{y}_0\right)
+&= \left[E_{\mathcal{T}}\left(\hat{y}_0\right) - f\left(x_0\right)\right]^2 \\
+&= \left[x_0^T\beta - x_0^T\beta\right]^2 \\
+\label{eq:ex-2.5-bias}
+&= 0 \\
+Var_{\mathcal{T}}\left(\hat{y}_0\right)
+&= E_{\mathcal{T}} \left[\hat{y}_0 - E_{\mathcal{T}}\left(\hat{y}_0\right)\right]^2 \\
+&= E_{\mathcal{T}} \left[x_0^T\beta + x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon} - x_0^T\beta\right]^2 \\
+&= E_{\mathcal{T}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}\right]^2 \\
+&= E_{\mathcal{T}} \left[\left(x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}\right) \left(x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}\right)^T\right] \\
+&= E_{\mathcal{T}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{\epsilon}\mathbf{\epsilon}^T\mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}x_0\right] \\
+&= E_{\mathcal{T}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\sigma^2I_N\mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}x_0\right] \\
+&= \sigma^2E_{\mathcal{T}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}x_0\right] \\
+\label{eq:ex-2.5-variance}
+&= \sigma^2E_{\mathcal{T}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}x_0\right]^2
+\end{align}
+$$
+
+Putting $\eqref{eq:ex-2.5-epe}$, $\eqref{eq:ex-2.5-bias}$ and $\eqref{eq:ex-2.5-variance}$ together, we can finally prove equation (2.27):
+
+$$
+\begin{align}
+EPE\left(x_0\right)
+&= Var\left(y_0|x_0\right) + Var_{\mathcal{T}}\left(\hat{y}_0\right) + Bias^2\left(\hat{y}_0\right) \\
+&= \sigma^2 + \sigma^2E_{\mathcal{T}} \left[x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}x_0\right] + 0
+\end{align}
+$$
+
+**Proof (b)**
+
+In the proof we will use the following properties:
+
+1. If $N$ is large and $\mathcal{T}$ were selected at random, and assuming
+$E\left(X\right) = 0$, then $\mathbf{X}^T\mathbf{X} \rightarrow NCov(\mathbf{X})$.
+1. Cyclic property of the trace operator: $\mathrm{trace}\left(AB\right) = \mathrm{trace}\left(AB\right)$.
+1. Both the trace and expectation operators are linear, so they can be interchanged: $E \circ trace = trace \circ E$.
+
+$$
+\begin{align}
+E_{x_0}EPE\left(x_0\right)
+&\sim \sigma^2/N \cdot E_{x_0}\left[x_0^TCov\left(X\right)^{-1}x_0\right] + \sigma^2 \\
+&= \sigma^2/N \cdot E_{x_0}\left[trace\left(x_0^TCov\left(X\right)^{-1}x_0\right)\right] + \sigma^2 \\
+&= \sigma^2/N \cdot E_{x_0}\left[trace\left(x_0x_0^TCov\left(X\right)^{-1}\right)\right] + \sigma^2 \\
+&= \sigma^2/N \cdot trace\left[E_{x_0}\left(x_0x_0^TCov\left(X\right)^{-1}\right)\right] + \sigma^2 \\
+&= \sigma^2/N \cdot trace\left[E_{x_0}\left(x_0x_0^T\right)Cov\left(X\right)^{-1}\right] + \sigma^2 \\
+&= \sigma^2/N \cdot trace\left[Cov\left(X\right)Cov\left(X\right)^{-1}\right] + \sigma^2 \\
+&= \sigma^2/N \cdot trace I_p + \sigma^2 \\
+&= \sigma^2\left(p/N\right) + \sigma^2 \\
+\end{align}
+$$
+
+---
+
 ## Ex. 2.6 weighted-least-squares-problem
 
 Item | Description
