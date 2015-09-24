@@ -1,0 +1,50 @@
+---
+title: "Linear Methods for Regression"
+output:
+  html_document:
+    toc: yes
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+---
+
+## Ex. 3.1 f-statistic-problem
+
+Item | Description
+--- | ---
+Authors | [maorenxin](https://github.com/maorenxin)
+Date | 2015/9/24
+Reference | [Wikipedia: F-statistics](https://en.wikipedia.org/wiki/F-statistics)
+
+**Ex. 3.1** Show that the $F$ statistic (3.13) for dropping a single coeffcient from a model is equal to the square of the corresponding $z$-score (3.12).
+
+**Proof**
+
+Recall that equation 3.13 for $F$ statistic is:
+
+$$
+\begin{equation}
+F = \frac{(RSS_0 - RSS_1) / (p_1 - p_0)}{RSS_1 / (N - p_1 - 1)}
+\end{equation}
+$$
+
+And that the $F$ statistic will have a $F_{p_1 - p_0, N-p_1 - 1}$ distribution under the null hypothesis, of which the smaller model is correct, and the Gaussian assumptions.
+
+By dropping a single coefficient from a model, here the $F$ statistic will have a $F_{1, N-p - 1}$ distribution where $p + 1$ are the number of parameters in the original model. 
+
+Then recall that equation 3.12 for $z$-score is:
+
+$$
+\begin{equation}
+z_j = \frac{\hat \beta_j}{\hat \sigma \sqrt{v_j}}
+\end{equation}
+$$
+
+Under the null hypothesis that $\beta_j=0$, $z_j$ is distributed as $t_{N-p-1}$.
+
+Since t-test is a specific case of F-test and we are testing identical hypotheses under identical distributions, we will have the same value in this case.
