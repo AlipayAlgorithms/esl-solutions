@@ -48,3 +48,5 @@ $$
 Under the null hypothesis that $\beta_j=0$, $z_j$ is distributed as $t_{N-p-1}$.
 
 Since t-test is a specific case of F-test and we are testing identical hypotheses under identical distributions, we will have the same value in this case.
+
+---
