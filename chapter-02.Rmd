@@ -524,3 +524,82 @@ Now we compare Eq. $\eqref{eq5}$ with Eq. $\eqref{eq1}$:
 
 Therefore, the fit of parameterized model $f_\theta{(x)}$ can be obtained from a  reduced weighted least squares problem.
 
+---
+
+## Ex. 2.8 performance-of-lr-and-knn
+
+Item | Description
+--- | ---
+Authors | [Yang-Zhou](https://github.com/Yang-Zhou)
+Date | 2015/9/17
+
+**Ex. 2.8**
+Compare the classification performance of linear regression and k–nearest neighbor classification on the zipcode data. In particular, consider only the $2$’s and $3$’s, and $k$ = $1$, $3$, $5$, $7$ and $15$. Show both the training and test error for each choice. The zipcode data are available from the book website http://www-stat.stanford.edu/ElemStatLearn.
+
+**Code**
+
+```{r, eval=FALSE}
+# Load knn classifier
+library(class)
+
+get.preprocessed <- function(url) {
+  # Get file
+  temp <- tempfile()
+  download.file(url, temp)
+  file <- read.table(temp, sep = ' ')
+  # filter the dependent variable y
+  file2 <- file[file[, 1] %in% c(2, 3), ]
+  # filter the independent variable X
+  file3 <- file2[, 1:257]
+}
+
+lr.predict <- function(model, testset) {
+  predset <- predict(model, newdata = testset)
+  predset[predset >= 2.5] = 3
+  predset[predset < 2.5] = 2
+  accuracy <- sum(predset == testset[, 1]) / length(predset)
+}
+
+knn.performance <- function(trainset, testset, k) {
+  knn.fit <- knn(trainset, testset, cl=trainset[, 1], k=k, prob=F)
+  accuracy <- sum(knn.fit == testset[, 1]) / length(knn.fit)
+}
+
+# Url of trainset and testset
+train.url <- paste('http://statweb.stanford.edu/~tibs/',
+                   'ElemStatLearn/datasets/zip.train.gz', sep='')
+test.url <- paste('http://statweb.stanford.edu/~tibs/',
+                  'ElemStatLearn/datasets/zip.test.gz', sep='')
+
+# Get proprocessed trainset and testset
+trainset <- get.preprocessed(train.url)
+testset <- get.preprocessed(test.url)
+
+# Performance of Linear Regression
+lm.fit <- lm(V1 ~ ., data = trainset)
+accuracy.train <- lr.predict(lm.fit, trainset)
+accuracy.test <- lr.predict(lm.fit, testset)
+sprintf(paste('The accuracy of LR\'s train accuracy is %.3f,',
+         'test acccuracy is %.3f'), accuracy.train, accuracy.test)
+
+# Performance of Knn with K = 1, 3, 5, 7, 15
+for (i in c(1, 3, 5, 7, 15)) {
+  accuracy.train <- knn.performance(trainset, trainset, i)
+  accuracy.test <- knn.performance(trainset, testset, i)
+  accuracy.str <- sprintf(paste('The accuracy of %2d-nn\'s train',
+                    'accuracy is %.3f, test acccuracy is %.3f'),
+                    i, accuracy.train, accuracy.test)
+  print(accuracy.str)
+}
+```
+
+The results are:
+
+```
+The accuracy of    LR's train accuracy is 0.994, test acccuracy is 0.959
+The accuracy of  1-nn's train accuracy is 1.000, test acccuracy is 0.975
+The accuracy of  3-nn's train accuracy is 0.996, test acccuracy is 0.970
+The accuracy of  5-nn's train accuracy is 0.994, test acccuracy is 0.970
+The accuracy of  7-nn's train accuracy is 0.994, test acccuracy is 0.970
+The accuracy of 15-nn's train accuracy is 0.991, test acccuracy is 0.962
+```
