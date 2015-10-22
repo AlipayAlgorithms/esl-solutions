@@ -294,7 +294,7 @@ Item | Description
 --- | ---
 Authors | [squall1988](https://github.com/squall1988), [PengjuYan](https://github.com/PengjuYan)
 Date | 2015/9/10
-Reference |[Wikipedia: Bias–variance tradeoff][wikipedia-bias-variance_tradeoff], [Wikipedia: Trace][wikipedia-trace], [Wikipedia: Quadratic form][wikipedia-quadratic-form]
+Reference | [Wikipedia: Bias–variance tradeoff][wikipedia-bias-variance_tradeoff], [Wikipedia: Trace][wikipedia-trace], [Wikipedia: Quadratic form][wikipedia-quadratic-form]
 
 [wikipedia-bias-variance_tradeoff]: https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff
 [wikipedia-trace]: https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29
@@ -354,7 +354,7 @@ EPE\left(x_0\right)
 \end{align}
 $$
 
-Also note that in the proof above, the only necessary assumption is that the mean of the noise term $\epsilon$ in $y=f\left(x\right)+\epsilon$ is $0$. We do not need any further assumptions like linear models or unbiased estimation.
+Also note that in the proof above, the only necessary assumption is that the expectation of the noise term $\epsilon$ in $y=f\left(x\right)+\epsilon$ is $0$. We do not need any further assumptions like linear models or unbiased estimation.
 
 Finally we get the EPE equation:
 
@@ -498,20 +498,20 @@ $$
 
 Now we get the _weighted_ item $n_i$. Next, we will rewrite the expressions in the bracket to be consistent with Eq. $\eqref{eq1}$.
 
-In Eq. $\eqref{eq3}$ we notice the term $\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$, which means the average of all responses $y$ resulting from the same input $x_i$. To be briefly expressed, we define $\bar{y_i}=\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$ and rewrite Eq. $\eqref{eq3}$ as
+In Eq. $\eqref{eq3}$ we notice the term $\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$, which means the average of all responses $y$ resulting from the same input $x_i$. To be briefly expressed, we define $\bar{y}_i=\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$ and rewrite Eq. $\eqref{eq3}$ as
 $$
 \begin{align}
-RSS(\theta)&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta(x_i)\bar{y_i}+f_\theta(x_i)^2\right)\\
-&= \sum_{i=1}^{N_u}n_i\left(\bar{y_i}^2-2f_\theta(x_i)\bar{y_i}+f_\theta(x_i)^2\right)+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y_i}^2}\\
-&= \sum_{i=1}^{N_u}n_i\left(\bar{y_i}-f_\theta(x_i)\right)^2+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y_i}^2}
+RSS(\theta)&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta(x_i)\bar{y}_i+f_\theta(x_i)^2\right)\\
+&= \sum_{i=1}^{N_u}n_i\left(\bar{y}_i^2-2f_\theta(x_i)\bar{y}_i+f_\theta(x_i)^2\right)+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2}\\
+&= \sum_{i=1}^{N_u}n_i\left(\bar{y}_i-f_\theta(x_i)\right)^2+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2}
 \label{eq4}
 \end{align}
 $$
 
-Once we get the measurements, i.e., the inputs $x_i$ and outputs $y_i$, the expression $\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y_i}^2}$ in Eq. $\eqref{eq4}$ won't change. Thus minimizing Eq. $\eqref{eq1}$ with respect to $\theta$ is equivalent to minimizing:
+Once we get the measurements, i.e., the inputs $x_i$ and outputs $y_i$, the expression $\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2}$ in Eq. $\eqref{eq4}$ won't change. Thus minimizing Eq. $\eqref{eq1}$ with respect to $\theta$ is equivalent to minimizing:
 $$
 \begin{equation}
-RSS(\theta)=\sum_{i=1}^{N_u}n_i\left(\bar{y_i}-f_\theta(x_i)\right)^2
+RSS(\theta)=\sum_{i=1}^{N_u}n_i\left(\bar{y}_i-f_\theta(x_i)\right)^2
 \end{equation}
 \label{eq5}
 $$
@@ -603,3 +603,118 @@ The accuracy of  5-nn's train accuracy is 0.994, test acccuracy is 0.970
 The accuracy of  7-nn's train accuracy is 0.994, test acccuracy is 0.970
 The accuracy of 15-nn's train accuracy is 0.991, test acccuracy is 0.962
 ```
+
+---
+
+## Ex. 2.9 error-low-on-train
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/22
+Reference | [Wikipedia: Idempotent matrix][wikipedia-idempotent-matrix], [Wikipedia: Positive-definite matrix][wikipedia-positive-definite-matrix]
+
+[wikipedia-idempotent-matrix]:https://en.wikipedia.org/wiki/Idempotent_matrix
+[wikipedia-positive-definite-matrix]:https://en.wikipedia.org/wiki/Positive-definite_matrix
+
+**Ex. 2.9** Consider a linear regression model with $p$ parameters, fit by least squares to a set of training data $\left(x_1, y_1\right)$, ..., $\left(x_N, y_N\right)$ drawn at random from a population. Let $\hat{\beta}$ be the least squares estimate. Suppose we have some test data $\left(\tilde{x}_1, \tilde{y}_1\right)$, ..., $\left(\tilde{x}_M, \tilde{y}_M\right)$ drawn at random from the same population as the training data. If $R_{tr}\left(\beta\right) = \frac{1}{N}\sum_1^N\left(y_i-\beta^Tx_i\right)^2$ and $R_{te}\left(\beta\right) = \frac{1}{M}\sum_1^M\left(\tilde{y}_i-\beta^T\tilde{x}_i\right)^2$, prove that
+
+$$
+\begin{equation}
+E\left[R_{tr}\left(\hat{\beta}\right)\right] \le E\left[R_{te}\left(\hat{\beta}\right)\right],
+\end{equation}
+$$
+
+where the expectations are over all that is random in each expression. [This exercise was brought to our attention by Ryan Tibshirani, from a homework assignment given by Andrew Ng.]
+
+**Proof**
+
+Note that our proof below is based on the strong assumption that the ralationship between $Y$ and $X$ is linear, i.e., equation (2.26) holds:
+
+$$
+\begin{equation}
+Y = X^T\beta + \epsilon,
+\end{equation}
+$$
+
+and the random error $\epsilon$ has $E\left(\epsilon\right) = 0$ and is independent of $X$.
+
+Let's simplify the training RSS first.
+
+$$
+\begin{align}
+RSS\left(\hat{\beta}\right)
+&= \left(\mathbf{y} - \hat{\mathbf{y}}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{X}\beta + \mathbf{\epsilon} - \mathbf{X}\hat{\beta}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{X}\beta + \mathbf{\epsilon} - \mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T \left(\mathbf{X}\beta + \mathbf{\epsilon}\right)\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{X}\beta + \mathbf{\epsilon} - \mathbf{X}\beta - H\mathbf{\epsilon}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{\epsilon} - H\mathbf{\epsilon}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{\epsilon} - H\mathbf{\epsilon}\right)^T \left(\mathbf{\epsilon} - H\mathbf{\epsilon}\right) \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - 2\mathbf{\epsilon}^TH\mathbf{\epsilon} + \mathbf{\epsilon}^TH^TH\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - 2\mathbf{\epsilon}^TH\mathbf{\epsilon} + \mathbf{\epsilon}^TH\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^TH\mathbf{\epsilon}
+\end{align}
+$$
+
+In the derivation above, we use the following compact notations: the training data is represented by the $N*\left(p+1\right)$ matrix $\mathbf{X}$, the true responses by $\mathbf{y} = \left(y_1, y_2, \dots, y_N\right)^T$, and the noises by $\mathbf{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_N\right)^T$.
+
+On page 46 the _hat_ matrix $H$ is defined as $H = \mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T$. It is easy to show that $H$ is:
+
+1. symmetric: $H^T = H$;
+1. [idempotent][wikipedia-idempotent-matrix]: $HH = H$; and
+1. [positive semi-definite][wikipedia-positive-definite-matrix]: $z^THz = z^TH^THz = \left(Hz\right)^T\left(Hz\right) \ge 0$.
+
+Then the expected training error is:
+
+$$
+\begin{align}
+E\left[R_{tr}\left(\hat{\beta}\right)\right]
+&= \frac{1}{N} E\left[RSS\left(\hat{\beta}\right)\right] \\
+&= \frac{1}{N} E\left[\mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^TH\mathbf{\epsilon}\right] \\
+&= \frac{1}{N} \left\{E\left[\mathbf{\epsilon}^T\mathbf{\epsilon}\right] - E\left[\mathbf{\epsilon}^TH\mathbf{\epsilon}\right]\right\} \\
+&= \frac{1}{N} \left\{N\sigma^2 - E\left[\mathbf{\epsilon}^TH\mathbf{\epsilon}\right]\right\} \\
+&\le \frac{1}{N} \left\{N\sigma^2 - 0\right\} \\
+&= \sigma^2,
+\end{align}
+$$
+
+where the last inequality holds because $H$ is positive semi-definite.
+
+Then we look at the testing RSS:
+
+$$
+\begin{align}
+\widetilde{RSS}\left(\hat{\beta}\right)
+&= \left(\tilde{\mathbf{y}} - \hat{\tilde{\mathbf{y}}}\right)^T \left(\tilde{\mathbf{y}} - \hat{\tilde{\mathbf{y}}}\right) \\
+&= \left(\tilde{\mathbf{X}}\beta + \tilde{\mathbf{\epsilon}} - \tilde{\mathbf{X}}\hat{\beta}\right)^T \left(\tilde{\mathbf{y}} - \hat{\tilde{\mathbf{y}}}\right) \\
+&= \left(\tilde{\mathbf{X}}\beta + \tilde{\mathbf{\epsilon}} - \tilde{\mathbf{X}}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T \left(\mathbf{X}\beta + \mathbf{\epsilon}\right)\right)^T \left(\tilde{\mathbf{y}} - \hat{\tilde{\mathbf{y}}}\right) \\
+&= \left(\tilde{\mathbf{X}}\beta + \tilde{\mathbf{\epsilon}} - \tilde{\mathbf{X}}\beta - \tilde{\mathbf{X}}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T \mathbf{\epsilon}\right)^T \left(\tilde{\mathbf{y}} - \hat{\tilde{\mathbf{y}}}\right) \\
+&= \left(\tilde{\mathbf{\epsilon}} - \tilde{\mathbf{X}}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T \mathbf{\epsilon}\right)^T \left(\tilde{\mathbf{y}} - \hat{\tilde{\mathbf{y}}}\right) \\
+&= \left(\tilde{\mathbf{\epsilon}} - \tilde{H}\mathbf{\epsilon}\right)^T \left(\tilde{\mathbf{y}} - \hat{\tilde{\mathbf{y}}}\right) \\
+&= \left(\tilde{\mathbf{\epsilon}} - \tilde{H}\mathbf{\epsilon}\right)^T \left(\tilde{\mathbf{\epsilon}} - \tilde{H}\mathbf{\epsilon}\right) \\
+&= \tilde{\mathbf{\epsilon}}^T\tilde{\mathbf{\epsilon}} - 2\tilde{\mathbf{\epsilon}}^T\tilde{H}\mathbf{\epsilon} + \mathbf{\epsilon}^T\tilde{H}^T\tilde{H}\mathbf{\epsilon}
+\end{align}
+$$
+
+where $\tilde{H} = \tilde{\mathbf{X}}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T$.
+
+Then we get the expected testing error as follows:
+
+$$
+\begin{align}
+E\left[R_{te}\left(\hat{\beta}\right)\right]
+&= \frac{1}{M} E\left[\widetilde{RSS}\left(\hat{\beta}\right)\right] \\
+&= \frac{1}{M} E\left[\tilde{\mathbf{\epsilon}}^T\tilde{\mathbf{\epsilon}} - 2\tilde{\mathbf{\epsilon}}^T\tilde{H}\mathbf{\epsilon} + \mathbf{\epsilon}^T\tilde{H}^T\tilde{H}\mathbf{\epsilon}\right] \\
+&= \frac{1}{M} \left\{E\left[\tilde{\mathbf{\epsilon}}^T\tilde{\mathbf{\epsilon}}\right] - 2E\left[\tilde{\mathbf{\epsilon}}^T\tilde{H}\mathbf{\epsilon}\right] + E\left[\mathbf{\epsilon}^T\tilde{H}^T\tilde{H}\mathbf{\epsilon}\right]\right\} \\
+&= \frac{1}{M} \left\{M\sigma^2 - 2E\left[\tilde{\mathbf{\epsilon}}^T\tilde{H}\mathbf{\epsilon}\right] + E\left[\mathbf{\epsilon}^T\tilde{H}^T\tilde{H}\mathbf{\epsilon}\right]\right\} \\
+\label{eq:ex-2.9-independence}
+&= \frac{1}{M} \left\{M\sigma^2 - 0 + E\left[\mathbf{\epsilon}^T\tilde{H}^T\tilde{H}\mathbf{\epsilon}\right]\right\} \\
+&\ge \frac{1}{M} \left\{M\sigma^2 - 0 + 0\right\} \\
+&= \sigma^2,
+\end{align}
+$$
+
+where $\eqref{eq:ex-2.9-independence}$ holds because $\mathbf{X}$, $\mathbf{\epsilon}$, $\tilde{\mathbf{X}}$ and $\tilde{\mathbf{\epsilon}}$ are independent of each other, and last inequality holds because $\mathbf{\epsilon}^T\tilde{H}^T\tilde{H}\mathbf{\epsilon} = \left(\tilde{H}\mathbf{\epsilon}\right)^T\left(\tilde{H}\mathbf{\epsilon}\right) \ge 0$.
+
+Finally we proved the result.
+
