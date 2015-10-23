@@ -296,9 +296,9 @@ Authors | [squall1988](https://github.com/squall1988), [PengjuYan](https://githu
 Date | 2015/9/10
 Reference |[Wikipedia: Bias–variance tradeoff][wikipedia-bias-variance_tradeoff], [Wikipedia: Trace][wikipedia-trace], [Wikipedia: Quadratic form][wikipedia-quadratic-form]
 
-[wikipedia-bias-variance_tradeoff]:https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff
-[wikipedia-trace]:https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29
-[wikipedia-quadratic-form]:https://en.wikipedia.org/wiki/Quadratic_form_%28statistics%29
+[wikipedia-bias-variance_tradeoff]: https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff
+[wikipedia-trace]: https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29
+[wikipedia-quadratic-form]: https://en.wikipedia.org/wiki/Quadratic_form_%28statistics%29
 
 **Ex. 2.5**
 

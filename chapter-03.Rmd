@@ -1,0 +1,83 @@
+---
+title: "Linear Methods for Regression"
+output:
+  html_document:
+    toc: yes
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+---
+
+## Note [p:47 eq:3.8 eq:3.10] beta-hat-distribution
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/23
+Reference | [Wikipedia: Multivariate normal distribution][wikipedia-multivariate-normal-distribution]
+
+[wikipedia-multivariate-normal-distribution]: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
+
+The least squares parameter estimates $\hat{\beta}$ is given by equation (3.6)
+
+$$
+\begin{equation}
+\hat{\beta} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}.
+\end{equation}
+$$
+
+Under the assumption that the observations $y_i$ are uncorrelated and have constant variance $\sigma^2$, and that the $x_i$ are fixed (non random), we now have
+
+$$
+\begin{equation}
+E\left(\hat{\beta}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T E\left(\mathbf{y}\right),
+\end{equation}
+$$
+
+and the variance–covariance matrix of the $\hat{\beta}$ becomes
+
+$$
+\begin{align}
+Var\left(\hat{\beta}\right)
+&= E\left\{ \left[\hat{\beta} - E\left(\hat{\beta}\right)\right]^T \left[\hat{\beta} - E\left(\hat{\beta}\right)\right] \right\} \\
+&= E\left\{ \left[\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\left(\mathbf{y}-E\left(\mathbf{y}\right)\right)\right] \left[\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\left(\mathbf{y}-E\left(\mathbf{y}\right)\right)\right]^T \right\} \\
+&= E\left[ \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\left(\mathbf{y}-E\left(\mathbf{y}\right)\right) \left(\mathbf{y}-E\left(\mathbf{y}\right)\right)^T\mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \right] \\
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T E\left[\left(\mathbf{y}-E\left(\mathbf{y}\right)\right) \left(\mathbf{y}-E\left(\mathbf{y}\right)\right)^T\right] \mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \\
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T \sigma^2I \mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \\
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \sigma^2 \\
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\sigma^2.
+\end{align}
+$$
+
+Further, we assume that (3.1) is the correct model for the mean; that is, the conditional expectation of $Y$ is linear in $X_1$, ..., $X_p$, and the deviations of $Y$ around its expectation are additive and Gaussian, i.e.,
+
+$$
+\begin{equation}
+Y = X^T\beta + \epsilon,
+\end{equation}
+$$
+
+where the error $\epsilon$ is a Gaussian random variable with expectation zero and variance $\sigma^2$, written $\epsilon \sim N\left(0, \sigma^2\right)$. According to [Wikipedia: Multivariate normal distribution][wikipedia-multivariate-normal-distribution], any linear transformation of independent standard normal random variables is a multivariate normal distribution, hence $\hat{\beta}$ is a multivariate normal distribution. The expectation of $\hat{\beta}$ can be derived straightforward as
+
+$$
+\begin{align}
+E\left(\hat{\beta}\right)
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T E\left(\mathbf{y}\right) \\
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{X}\beta \\
+&= \beta.
+\end{align}
+$$
+
+Finally we proved that:
+
+$$
+\begin{equation}
+\hat{\beta} \sim N\left(\beta, \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\sigma^2\right).
+\end{equation}
+$$
+
