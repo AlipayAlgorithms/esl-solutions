@@ -77,9 +77,12 @@ Finally we proved that:
 
 $$
 \begin{equation}
+\label{eq:beta-hat-distribution}
 \hat{\beta} \sim N\left(\beta, \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\sigma^2\right).
 \end{equation}
 $$
+
+---
 
 ## Note [p:47 eq:3.11] training-rss-distribution
 
@@ -144,15 +147,16 @@ RSS\left(\hat{\beta}\right)
 &= \mathbf{\epsilon}^TUU^T\mathbf{\epsilon} - \mathbf{\epsilon}^TUDU^T\mathbf{\epsilon} \\
 &= \left(U^T\mathbf{\epsilon}\right)^T\left(U^T\mathbf{\epsilon}\right) - \left(U^T\mathbf{\epsilon}\right)^TD\left(U^T\mathbf{\epsilon}\right) \\
 &= \mathbf{z}^T\mathbf{z} - \mathbf{z}^TD\mathbf{z} \\
-&= \left(z_1^2 + z_2^2 + \dots + z_p^2 + z_{p+1}^2 + z_{p+2}^2 + \dots + z_N^2\right) - \left(z_1^2 + z_2^2 + \dots + z_p^2\right) \\
-&= \left(z_{p+2}^2 + z_{p+3}^2 + \dots + z_N^2\right),
+&= \left(z_1^2 + z_2^2 + \dots + z_p^2 + z_{p+1}^2 + z_{p+2}^2 + \dots + z_N^2\right) - \left(z_1^2 + z_2^2 + \dots + z_{p+1}^2\right) \\
+&= z_{p+2}^2 + z_{p+3}^2 + \dots + z_N^2,
 \end{align}
 $$
 
-where $z_i = \left<u_i, \mathbf{\epsilon}\right>$. It is easy to show that all the $z_i$ follow Gaussian distributions with variance $\sigma^2$ (norms of $u_i$ are 1) and are independent of each other (columns of $U$ are orthogonal of each other), in other words, $RSS\left(\hat{\beta}\right)$ is a sum of squared $N-p-1$ independent normal variables. By definition, $RSS\left(\hat{\beta}\right)/\sigma^2$ follows a [Chi-squared distribution][wikipedia-chi-squared-distribution]:
+where $z_i = \left<u_i, \mathbf{\epsilon}\right>$ is the inner product between the $i$th column of $U$ and $\mathbf{\epsilon}$. It is easy to show that all the $z_i$ follow Gaussian distributions with variance $\sigma^2$ (norms of $u_i$ are 1) and are independent of each other (columns of $U$ are orthogonal of each other), in other words, $RSS\left(\hat{\beta}\right)$ is a sum of squared $N-p-1$ independent normal variables. By definition, $RSS\left(\hat{\beta}\right)/\sigma^2$ follows a [Chi-squared distribution][wikipedia-chi-squared-distribution]:
 
 $$
 \begin{equation}
+\label{eq:rss-distribution}
 \frac{RSS\left(\hat{\beta}\right)}{\sigma^2} \sim \chi_{N-p-1}^2,
 \end{equation}
 $$
@@ -164,4 +168,87 @@ $$
 \left(N-p-1\right)\hat{\sigma}^2 \sim \sigma^2\chi_{N-p-1}^2.
 \end{equation}
 $$
+
+---
+
+## Note [p:48 eq:3.12] t-statistic
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/26
+Reference | [Wikipedia: Student's t-distribution][wikipedia-student's-t-distribution], [Wikipedia: Student's t-test][wikipedia-student's-t-test]
+
+[wikipedia-student's-t-distribution]: https://en.wikipedia.org/wiki/Student's_t-distribution
+[wikipedia-student's-t-test]: https://en.wikipedia.org/wiki/Student's_t-test
+
+Here we are going to prove that _Z-score_
+
+$$
+\begin{equation}
+z_j = \frac{\hat{\beta_j}}{\hat{\sigma}\sqrt{v_j}},
+\end{equation}
+$$
+
+where $v_j$ is the $j$th diagonal element of $\left(\mathbf{X}^T\mathbf{X}\right)^{−1}$, follows a Student's $t$-distribution under the null hypothesis that $\beta_j = 0$.
+
+Recall the distrubution of $\hat{\beta}$ in $\eqref{eq:beta-hat-distribution}$, it is easy to show that $\frac{\hat{\beta_j}-0}{\sigma\sqrt{v_j}}$ follows the standard normal distribution. And as shown in $\eqref{eq:rss-distribution}$, $\frac{RSS\left(\hat{\beta}\right)}{\sigma^2}$ follows the chi-squared distribution with $N-p-1$ degrees of freedom, therefore if we can proof that $\hat{\beta}$ and $RSS\left(\hat{\beta}\right)$ are independent of each other then by the definition of [Student's t-distribution][wikipedia-student's-t-distribution],
+
+$$
+\begin{equation}
+z_j = \frac{\frac{\hat{\beta_j}-0}{\sigma\sqrt{v_j}}}{\sqrt{\frac{RSS\left(\hat{\beta}\right)}{\sigma^2 \left(N-p-1\right)}}} = \frac{\hat{\beta_j}}{\sqrt{\frac{RSS\left(\hat{\beta}\right)}{N-p-1}}\sqrt{v_j}} = \frac{\hat{\beta_j}}{\hat{\sigma}\sqrt{v_j}}
+\end{equation}
+$$
+
+follows the $t$ distribution with $N−p−1$ degrees of freedom.
+
+We now proceed to proof $\hat{\beta}$ and $RSS\left(\hat{\beta}\right)$ are independent of each other by making use of QR decomposition of $\mathbf{X}$ as shown in (3.31), (3.31) and (3.32)
+
+$$
+\begin{align}
+\mathbf{X}
+&= \mathbf{Z}\mathbf{D}^{-1}\mathbf{D}\mathbf{\Gamma} \\
+&= \mathbf{Q}\mathbf{R}, \\
+\hat{\beta} &= \mathbf{R}^{-1}\mathbf{Q}^T\mathbf{y}, \\
+\hat{y} &= \mathbf{Q}\mathbf{Q}^T\mathbf{y},
+\end{align}
+$$
+
+where $\mathbf{Q}$ is an $N\times\left(p+1\right)$ orthogonal matrix, $\mathbf{Q}^T\mathbf{Q} = \mathbf{I}$, and $\mathbf{R}$ is a $\left(p+1\right)\times\left(p+1\right)$ upper triangular matrix.
+
+We make up a $N\times\left(N-p-1\right)$ orthogonal matrix $\mathbf{Q}_0$ satisfying that all columns of $\mathbf{Q}$ and $\mathbf{Q}_0$ are orthogonal to each other, in other words the $N \times N$ matrix $\mathbf{U}$ is a (real) unitary matrix:
+
+$$
+\begin{equation}
+\mathbf{U} = \left[ \begin{array}{cc} \mathbf{Q} & \mathbf{Q}_0 \end{array} \right].
+\end{equation}
+$$
+
+In the following derivations, we denote by $z_i = \left<u_i, \mathbf{\epsilon}\right>$ the inner product between the $i$th column of $\mathbf{U}$ and $\mathbf{\epsilon}$. First we look at $\hat{\beta}$
+
+$$
+\begin{align}
+\hat{\beta}
+&= \mathbf{R}^{-1}\mathbf{Q}^T\mathbf{y} \\
+&= \mathbf{R}^{-1}\mathbf{Q}^T\left(\mathbf{X}\beta+\mathbf{\epsilon}\right) \\
+&= \beta + \mathbf{R}^{-1}\mathbf{Q}^T\mathbf{\epsilon}.
+\end{align}
+$$
+
+We can see that $\hat{\beta}$ is a linear combination of $z_1$, $z_2$, ..., and $z_{p+1}$.
+
+Then what about $RSS\left(\hat{\beta}\right)$?
+
+$$
+\begin{align}
+RSS\left(\hat{\beta}\right)
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^TH\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^T\mathbf{Q}\mathbf{Q}^T\mathbf{\epsilon} \\
+&= \left(\mathbf{U}^T\mathbf{\epsilon}\right)^T\left(\mathbf{U}^T\mathbf{\epsilon}\right) - \left(\mathbf{Q}^T\mathbf{\epsilon}\right)^T\left(\mathbf{Q}^T\mathbf{\epsilon}\right) \\
+&= \left(z_1^2 + z_2^2 + \dots + z_p^2 + z_{p+1}^2 + z_{p+2}^2 + \dots + z_N^2\right) - \left(z_1^2 + z_2^2 + \dots + z_{p+1}^2\right) \\
+&= z_{p+2}^2 + z_{p+3}^2 + \dots + z_N^2.
+\end{align}
+$$
+
+Then $RSS\left(\hat{\beta}\right)$ is a function of $z_{p+2}$, $z_{p+3}$, ..., and $z_N$. Because $\epsilon_i$ are independent standard normal random variables and $\mathbf{U}$ is unitary, then $z_i$ are independent standard normal random variables, too. Finally we proved that $\hat{\beta}$ and $RSS\left(\hat{\beta}\right)$ are indenpendent of each other.
 
