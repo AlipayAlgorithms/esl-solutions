@@ -81,3 +81,87 @@ $$
 \end{equation}
 $$
 
+## Note [p:47 eq:3.11] training-rss-distribution
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/23
+Reference | [Wikipedia: Idempotent matrix][wikipedia-idempotent-matrix], [Wikipedia: Positive-definite matrix][wikipedia-positive-definite-matrix], [Wikipedia: Spectral theorem][wikipedia-spectral-theorem], [Wikipedia: Chi-squared distribution][wikipedia-chi-squared-distribution]
+
+[wikipedia-idempotent-matrix]: https://en.wikipedia.org/wiki/Idempotent_matrix
+[wikipedia-positive-definite-matrix]: https://en.wikipedia.org/wiki/Positive-definite_matrix
+[wikipedia-spectral-theorem]: https://en.wikipedia.org/wiki/Spectral_theorem
+[wikipedia-chi-squared-distribution]: https://en.wikipedia.org/wiki/Chi-squared_distribution
+
+In the solution to **Ex. 2.9**, we got the representation of training RSS by the hat matrix
+
+$$
+\begin{align}
+RSS\left(\hat{\beta}\right)
+&= \left(\mathbf{y} - \hat{\mathbf{y}}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{X}\beta + \mathbf{\epsilon} - \mathbf{X}\hat{\beta}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{X}\beta + \mathbf{\epsilon} - \mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T \left(\mathbf{X}\beta + \mathbf{\epsilon}\right)\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{X}\beta + \mathbf{\epsilon} - \mathbf{X}\beta - H\mathbf{\epsilon}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{\epsilon} - H\mathbf{\epsilon}\right)^T \left(\mathbf{y} - \hat{\mathbf{y}}\right) \\
+&= \left(\mathbf{\epsilon} - H\mathbf{\epsilon}\right)^T \left(\mathbf{\epsilon} - H\mathbf{\epsilon}\right) \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - 2\mathbf{\epsilon}^TH\mathbf{\epsilon} + \mathbf{\epsilon}^TH^TH\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - 2\mathbf{\epsilon}^TH\mathbf{\epsilon} + \mathbf{\epsilon}^TH\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^TH\mathbf{\epsilon},
+\end{align}
+$$
+
+where $H$ is:
+
+1. symmetric: $H^T = H$;
+1. [idempotent][wikipedia-idempotent-matrix]: $HH = H$; and
+1. [positive semi-definite][wikipedia-positive-definite-matrix]: $z^THz = z^TH^THz = \left(Hz\right)^T\left(Hz\right) \ge 0$.
+
+[Eigenvalues of idempotent matrices are either 0 or 1](http://everything2.com/title/Eigenvalues+of+idempotent+matrices+are+either+0+or+1): For any idempotent matrix $A$,
+
+$$
+\begin{equation}
+\lambda v = Av = A^2v = A\left(Av\right) = A\lambda v = \lambda Av = \lambda^2 v.
+\end{equation}
+$$
+
+$H$ is also a normal matrix ($H^{\ast}H = HH^{\ast}$), then it is can be unitary diagonalized according to the [Spectral theorem][wikipedia-spectral-theorem]:
+
+$$
+\begin{equation}
+H = UDU^{\ast},
+\end{equation}
+$$
+
+where $U$ is a real unitary matrix and $U^{\ast} = U^{-1}= U^T$, and $D$ is a diagonal matrix with eigenvalues appearing at the diagonal entries. Under appropriate permutations, we can arrange the eigenvalues of $1$s before all the $0$s.
+
+Then
+
+$$
+\begin{align}
+RSS\left(\hat{\beta}\right)
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^TH\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^TUU^T\mathbf{\epsilon} - \mathbf{\epsilon}^TUDU^T\mathbf{\epsilon} \\
+&= \left(U^T\mathbf{\epsilon}\right)^T\left(U^T\mathbf{\epsilon}\right) - \left(U^T\mathbf{\epsilon}\right)^TD\left(U^T\mathbf{\epsilon}\right) \\
+&= \mathbf{z}^T\mathbf{z} - \mathbf{z}^TD\mathbf{z} \\
+&= \left(z_1^2 + z_2^2 + \dots + z_p^2 + z_{p+1}^2 + z_{p+2}^2 + \dots + z_N^2\right) - \left(z_1^2 + z_2^2 + \dots + z_p^2\right) \\
+&= \left(z_{p+2}^2 + z_{p+3}^2 + \dots + z_N^2\right),
+\end{align}
+$$
+
+where $z_i = \left<u_i, \mathbf{\epsilon}\right>$. It is easy to show that all the $z_i$ follow Gaussian distributions with variance $\sigma^2$ (norms of $u_i$ are 1) and are independent of each other (columns of $U$ are orthogonal of each other), in other words, $RSS\left(\hat{\beta}\right)$ is a sum of squared $N-p-1$ independent normal variables. By definition, $RSS\left(\hat{\beta}\right)/\sigma^2$ follows a [Chi-squared distribution][wikipedia-chi-squared-distribution]:
+
+$$
+\begin{equation}
+\frac{RSS\left(\hat{\beta}\right)}{\sigma^2} \sim \chi_{N-p-1}^2,
+\end{equation}
+$$
+
+or in another form
+
+$$
+\begin{equation}
+\left(N-p-1\right)\hat{\sigma}^2 \sim \sigma^2\chi_{N-p-1}^2.
+\end{equation}
+$$
+
