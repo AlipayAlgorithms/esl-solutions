@@ -656,7 +656,7 @@ RSS\left(\hat{\beta}\right)
 \end{align}
 $$
 
-In the derivation above, we use the following compact notations: the training data is represented by the $N*\left(p+1\right)$ matrix $\mathbf{X}$, the true responses by $\mathbf{y} = \left(y_1, y_2, \dots, y_N\right)^T$, and the noises by $\mathbf{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_N\right)^T$.
+In the derivation above, we use the following compact notations: the training data is represented by the $N \times \left(p+1\right)$ matrix $\mathbf{X}$, the true responses by $\mathbf{y} = \left(y_1, y_2, \dots, y_N\right)^T$, and the noises by $\mathbf{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_N\right)^T$.
 
 On page 46 the _hat_ matrix $H$ is defined as $H = \mathbf{X}\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T$. It is easy to show that $H$ is:
 

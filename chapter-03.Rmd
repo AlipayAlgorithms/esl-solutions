@@ -44,7 +44,7 @@ and the variance–covariance matrix of the $\hat{\beta}$ becomes
 $$
 \begin{align}
 Var\left(\hat{\beta}\right)
-&= E\left\{ \left[\hat{\beta} - E\left(\hat{\beta}\right)\right]^T \left[\hat{\beta} - E\left(\hat{\beta}\right)\right] \right\} \\
+&= E\left\{ \left[\hat{\beta} - E\left(\hat{\beta}\right)\right] \left[\hat{\beta} - E\left(\hat{\beta}\right)\right]^T \right\} \\
 &= E\left\{ \left[\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\left(\mathbf{y}-E\left(\mathbf{y}\right)\right)\right] \left[\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\left(\mathbf{y}-E\left(\mathbf{y}\right)\right)\right]^T \right\} \\
 &= E\left[ \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\left(\mathbf{y}-E\left(\mathbf{y}\right)\right) \left(\mathbf{y}-E\left(\mathbf{y}\right)\right)^T\mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \right] \\
 &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T E\left[\left(\mathbf{y}-E\left(\mathbf{y}\right)\right) \left(\mathbf{y}-E\left(\mathbf{y}\right)\right)^T\right] \mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \\
@@ -128,7 +128,7 @@ $$
 \end{equation}
 $$
 
-$H$ is also a normal matrix ($H^{\ast}H = HH^{\ast}$), then it is can be unitary diagonalized according to the [Spectral theorem][wikipedia-spectral-theorem]:
+$H$ is also a normal matrix ($H^{\ast}H = HH^{\ast}$), then it can be unitary diagonalized according to the [Spectral theorem][wikipedia-spectral-theorem]:
 
 $$
 \begin{equation}
@@ -136,7 +136,7 @@ H = UDU^{\ast},
 \end{equation}
 $$
 
-where $U$ is a real unitary matrix and $U^{\ast} = U^{-1}= U^T$, and $D$ is a diagonal matrix with eigenvalues appearing at the diagonal entries. Under appropriate permutations, we can arrange the eigenvalues of $1$s before all the $0$s.
+where $U$ is a real unitary matrix and $U^{\ast} = U^T = U^{-1}$, and $D$ is a diagonal matrix with eigenvalues appearing at the diagonal entries. Under appropriate permutations, we can rearrange the eigenvalues of $1$s before all the $0$s.
 
 Then
 
@@ -152,7 +152,7 @@ RSS\left(\hat{\beta}\right)
 \end{align}
 $$
 
-where $z_i = \left<u_i, \mathbf{\epsilon}\right>$ is the inner product between the $i$th column of $U$ and $\mathbf{\epsilon}$. It is easy to show that all the $z_i$ follow Gaussian distributions with variance $\sigma^2$ (norms of $u_i$ are 1) and are independent of each other (columns of $U$ are orthogonal of each other), in other words, $RSS\left(\hat{\beta}\right)$ is a sum of squared $N-p-1$ independent normal variables. By definition, $RSS\left(\hat{\beta}\right)/\sigma^2$ follows a [Chi-squared distribution][wikipedia-chi-squared-distribution]:
+where $z_i = \left<u_i, \mathbf{\epsilon}\right>$ is the inner product between the $i$th column of $U$ and $\mathbf{\epsilon}$. It is easy to show that all the $z_i$ follow Gaussian distributions with variance $\sigma^2$ (norms of $u_i$ are 1) and are independent of each other (columns of $U$ are orthogonal of each other), in other words, $RSS\left(\hat{\beta}\right)$ is a sum of squared $N-p-1$ independent normal variables. By definition, $\left. RSS\middle(\hat{\beta}\middle)\middle/\sigma^2 \right.$ follows a [Chi-squared distribution][wikipedia-chi-squared-distribution]:
 
 $$
 \begin{equation}
@@ -202,7 +202,7 @@ $$
 
 follows the $t$ distribution with $N−p−1$ degrees of freedom.
 
-We now proceed to proof $\hat{\beta}$ and $RSS\left(\hat{\beta}\right)$ are independent of each other by making use of QR decomposition of $\mathbf{X}$ as shown in (3.31), (3.31) and (3.32)
+We now proceed to proof $\hat{\beta}$ and $RSS\left(\hat{\beta}\right)$ are independent of each other by making use of **QR** decomposition of $\mathbf{X}$ as shown in (3.31), (3.31) and (3.32)
 
 $$
 \begin{align}
@@ -216,15 +216,16 @@ $$
 
 where $\mathbf{Q}$ is an $N\times\left(p+1\right)$ orthogonal matrix, $\mathbf{Q}^T\mathbf{Q} = \mathbf{I}$, and $\mathbf{R}$ is a $\left(p+1\right)\times\left(p+1\right)$ upper triangular matrix.
 
-We make up a $N\times\left(N-p-1\right)$ orthogonal matrix $\mathbf{Q}_0$ satisfying that all columns of $\mathbf{Q}$ and $\mathbf{Q}_0$ are orthogonal to each other, in other words the $N \times N$ matrix $\mathbf{U}$ is a (real) unitary matrix:
+We make up a $N\times\left(N-p-1\right)$ orthogonal matrix $\mathbf{Q}_r$ satisfying that all columns of $\mathbf{Q}$ and $\mathbf{Q}_r$ are orthogonal to each other, in other words the $N \times N$ matrix $\mathbf{U}$ is a (real) unitary matrix:
 
 $$
 \begin{equation}
-\mathbf{U} = \left[ \begin{array}{cc} \mathbf{Q} & \mathbf{Q}_0 \end{array} \right].
+\label{eq:q-complemented-as-u}
+\mathbf{U} = \left[ \begin{array}{cc} \mathbf{Q} & \mathbf{Q}_r \end{array} \right].
 \end{equation}
 $$
 
-In the following derivations, we denote by $z_i = \left<u_i, \mathbf{\epsilon}\right>$ the inner product between the $i$th column of $\mathbf{U}$ and $\mathbf{\epsilon}$. First we look at $\hat{\beta}$
+In the following derivations, we denote by $z_i = \left<u_i, \mathbf{\epsilon}\right>$ the inner product between the $i$th column of $\mathbf{U}$ and $\mathbf{\epsilon}$. First we look at $\hat{\beta}$:
 
 $$
 \begin{align}
@@ -235,9 +236,9 @@ $$
 \end{align}
 $$
 
-We can see that $\hat{\beta}$ is a linear combination of $z_1$, $z_2$, ..., and $z_{p+1}$.
+We can see that $\hat{\beta}$ is a function of $z_1$, $z_2$, ..., and $z_{p+1}$.
 
-Then what about $RSS\left(\hat{\beta}\right)$?
+What about $RSS\left(\hat{\beta}\right)$?
 
 $$
 \begin{align}
@@ -250,5 +251,69 @@ RSS\left(\hat{\beta}\right)
 \end{align}
 $$
 
-Then $RSS\left(\hat{\beta}\right)$ is a function of $z_{p+2}$, $z_{p+3}$, ..., and $z_N$. Because $\epsilon_i$ are independent standard normal random variables and $\mathbf{U}$ is unitary, then $z_i$ are independent standard normal random variables, too. Finally we proved that $\hat{\beta}$ and $RSS\left(\hat{\beta}\right)$ are indenpendent of each other.
+Then $RSS\left(\hat{\beta}\right)$ is a function of $z_{p+2}$, $z_{p+3}$, ..., and $z_N$. Because $\epsilon_i$ are independent normal random variables and $\mathbf{U}$ is unitary, then $z_i$ are independent normal random variables, too. Finally we proved that $\hat{\beta}$ and $RSS\left(\hat{\beta}\right)$ are indenpendent of each other.
+
+---
+
+## Note [p:48 eq:3.13] f-statistic
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/26
+Reference | [Wikipedia: F-distribution][wikipedia-f-distribution], [Wikipedia: F-test][wikipedia-f-test]
+
+[wikipedia-f-distribution]: https://en.wikipedia.org/wiki/F-distribution
+[wikipedia-f-test]: https://en.wikipedia.org/wiki/F-test
+
+In (3.13) the $F$ statistic is given as
+
+$$
+\begin{equation}
+\label{eq:f-statistic}
+F = \frac{\left. \middle(RSS_0-RSS_1\middle) \middle/ \middle(p_1-p_0\middle) \right.}{\left. RSS_1 \middle/ \middle(N-p_1-1\middle) \right.},
+\end{equation}
+$$
+
+where $RSS_1$ is the residual sum-of-squares for the least squares fit of the bigger model with $p_1+1$ parameters, and $RSS_0$ the same for the nested smaller model with $p_0+1$ parameters, having $p_1−p_0$ parameters constrained to be zero.
+
+Here we are going to prove that $F$ statistic has a $F_{p_1−p_0,N−p_1−1}$ distribution, under the Gaussian assumptions, and the null hypothesis that the smaller model is correct.
+
+Let's rearrange the cloumns in $\mathbf{X}$ so that the column vectors used by the larger model only appearing at the rightmost. Appling **QR** decomposition we get
+
+$$
+\begin{align}
+\mathbf{X}
+&= \mathbf{Q}\mathbf{R} \\
+&= \left[ \begin{array}{cc} \mathbf{Q}_0 & \mathbf{Q}_s \end{array} \right] \left[ \begin{array}{cc} \mathbf{R}_0 & \mathbf{R}_{s1} \\ \mathbf{0} & \mathbf{R}_{s2} \end{array} \right], \\
+\mathbf{X}_0 &= \mathbf{Q}_0\mathbf{R}_0,
+\end{align}
+$$
+
+where $\mathbf{Q}_0$ is a $N \times \left(p_0+1\right)$ orthogonal matrix and $\mathbf{R}_0$
+is a $(p_0+1) \times (p_0+1)$ upper triangular matrix. Then the RSSs can be simplified as
+
+$$
+\begin{align}
+RSS_1
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^TH\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^T\mathbf{Q}\mathbf{Q}^T\mathbf{\epsilon} \\
+&= \left(\mathbf{U}^T\mathbf{\epsilon}\right)^T\left(\mathbf{U}^T\mathbf{\epsilon}\right) - \left(\mathbf{Q}^T\mathbf{\epsilon}\right)^T\left(\mathbf{Q}^T\mathbf{\epsilon}\right) \\
+&= \left(z_1^2 + z_2^2 + \dots + z_N^2\right) - \left(z_1^2 + z_2^2 + \dots + z_{p_1+1}^2\right) \\
+&= z_{p_1+2}^2 + z_{p_1+3}^2 + \dots + z_N^2, \\
+RSS_0
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^TH_0\mathbf{\epsilon} \\
+&= \mathbf{\epsilon}^T\mathbf{\epsilon} - \mathbf{\epsilon}^T\mathbf{Q}_0\mathbf{Q}_0^T\mathbf{\epsilon} \\
+&= \left(\mathbf{U}^T\mathbf{\epsilon}\right)^T\left(\mathbf{U}^T\mathbf{\epsilon}\right) - \left(\mathbf{Q}_0^T\mathbf{\epsilon}\right)^T\left(\mathbf{Q}_0^T\mathbf{\epsilon}\right) \\
+&= \left(z_1^2 + z_2^2 + \dots + z_N^2\right) - \left(z_1^2 + z_2^2 + \dots + z_{p_0+1}^2\right) \\
+&= z_{p_0+2}^2 + z_{p_0+3}^2 + \dots + z_N^2, \\
+RSS_0 - RSS_1
+&= \left(z_{p_0+2}^2 + z_{p_0+3}^2 + \dots + z_N^2\right) - \left(z_{p_1+2}^2 + z_{p_1+3}^2 + \dots + z_N^2\right) \\
+&= z_{p_0+2}^2 + z_{p_0+3}^2 + \dots + z_{p_1+1}^2,
+\end{align}
+$$
+
+where $\mathbf{U}$ is defined as $\eqref{eq:q-complemented-as-u}$.
+
+Because $\epsilon_i$ are independent normal random variables and $\mathbf{U}$ is unitary, then $z_i$ are independent normal random variables, too. Then we have $\frac{RSS_1}{\sigma^2} \sim \chi_{N-p_1-1}^2$, $\frac{RSS_0-RSS_1}{\sigma^2} \sim \chi_{p_1-p_0}^2$, and those two are independent of each other. By the definition of [F-distribution][wikipedia-f-distribution], the $F$ statistic in $\eqref{eq:f-statistic}$ follows the $F$ distribution with $p_1-p_0$ and $N−p_1−1$ degrees of freedom respectively.
 
