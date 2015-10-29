@@ -66,7 +66,7 @@ A general definition of the **effective degrees of freedom** is given by the tra
 
 $$
 \begin{equation}
-\mathrm{tr}(\mathbf{H}) = \sum_{i} h_{ii}
+\mathrm{tr}\left(\mathbf{H}\right) = \sum_{i} h_{ii}
 \end{equation}
 $$
 
@@ -90,7 +90,7 @@ In section 2.3, the training data were _simulated from a model somewhere between
 
 > **Scenario 2**: The training data in each class came from a mixture of 10 low-variance Gaussian distributions, with individual means themselves distributed as Gaussian.
 
-The sampling procedure described in the paragraph of interest **follows** the definition of Gaussian mixture models of no doubt. The difference between that procedure and Scenario 2 lies in the fact that the two means of the Gaussian distributions from which the individual means of the two classes were drawn **are different**, which are $(1, 0)^T$ and $(0, 1)^T$, respectively. In Scenario 2 however, the individual means follow the same Gaussian distribution. Therefore, the separability of the simulated data lies between Scenario 1 and Scenario 2.
+The sampling procedure described in the paragraph of interest **follows** the definition of Gaussian mixture models of no doubt. The difference between that procedure and Scenario 2 lies in the fact that the two means of the Gaussian distributions from which the individual means of the two classes were drawn **are different**, which are $\left(1, 0\right)^T$ and $\left(0, 1\right)^T$, respectively. In Scenario 2 however, the individual means follow the same Gaussian distribution. Therefore, the separability of the simulated data lies between Scenario 1 and Scenario 2.
 
 ---
 
@@ -123,27 +123,28 @@ Item | Description
 Authors | [justdark](https://github.com/justdark)
 Date | 2015/9/5
 
-**Ex. 2.1** Suppose each of $K$-classes has an associated target $t_{k}$, which is a vector of all zeros, except a one in the $k$th position. Show that classifying to the largest element of $\hat{y}$ amounts to choosing the closest target, $\mathrm{min}_{k}\left|\left|t_{k} - \hat{y}\right|\right|$, if the elements of $\hat{y}$ sum to one.
+**Ex. 2.1** Suppose each of $K$-classes has an associated target $t_{k}$, which is a vector of all zeros, except a one in the $k$th position. Show that classifying to the largest element of $\hat{y}$ amounts to choosing the closest target, $\mathrm{min}_{k}\left\Vert t_{k} - \hat{y}\right\Vert$, if the elements of $\hat{y}$ sum to one.
 
 **Proof**
 
 According to the description, what we need to prove is:
+
 $$
 \begin{equation}
-\mathop{\mathrm{argmax}}_{k}\left(\hat{y}_k\right)=\mathop{\mathrm{argmin}}_{k}(\left|\left|t_{k}-\hat{y}\right|\right|)
+\mathop{\mathrm{argmax}}_{k}\left(\hat{y}_k\right)=\mathop{\mathrm{argmin}}_{k}\left(\left\Vert t_{k}-\hat{y}\right\Vert\right)
 \end{equation}
 $$
 
 So we have:
 $$
 \begin{align}
-\mathop{\mathrm{argmin}}_{k}\left(\left|\left|t_{k}-\hat{y}\right|\right|\right) &=  \mathop{\mathrm{argmin}}_{k}\left\|t_{k}-\hat{y}\right\|^2 \\
+\mathop{\mathrm{argmin}}_{k}\left(\left\Vert t_{k}-\hat{y}\right\Vert\right) &= \mathop{\mathrm{argmin}}_{k}\left\Vert t_{k}-\hat{y}\right\Vert^2 \\
 &= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}-\hat{y}_i\right]^2 \\
-&= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}^2+\hat{y}_i^2-2\left(t_{k}\right)_{i}\hat{y}_i\right]\\
+&= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}^2+\hat{y}_i^2-2\left(t_{k}\right)_{i}\hat{y}_i\right] \\
 &= \mathop{\mathrm{argmin}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}^2-2\left(t_{k}\right)_{i}\hat{y}_i\right] \\
 &= \mathop{\mathrm{argmin}}_{k} \left[\sum_{i=1}^K\left(t_{k}\right)_{i}^2-\sum_{i=1}^K2\left(t_{k}\right)_{i}\hat{y}_i\right] \\
-&= \mathop{\mathrm{argmin}}_{k} \left[1-\sum_{i=1}^K2\left(t_{k}\right)_{i}\hat{y}_i\right]\\
-&= \mathop{\mathrm{argmax}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}\hat{y}_i\right]\\
+&= \mathop{\mathrm{argmin}}_{k} \left[1-\sum_{i=1}^K2\left(t_{k}\right)_{i}\hat{y}_i\right] \\
+&= \mathop{\mathrm{argmax}}_{k} \sum_{i=1}^K\left[\left(t_{k}\right)_{i}\hat{y}_i\right] \\
 &= \mathop{\mathrm{argmax}}_{k} \left(\hat{y}_k\right)
 \end{align}
 $$
@@ -195,7 +196,7 @@ How to calculate the $Pr\left(X = x\left|\right.\mathcal{G}_{k}\right)$ ?
 For the **Scenario 1**, if the $\mathcal{G}$ is simulated from two bivariate Guassian distribution, we can use the **probability density function (pdf)** of Guassian distribution:
 $$
 \begin{align}
-f\left(x\right)=\frac{1}{\sqrt{\left(2\pi\right)^{2}\left|\Sigma\right|}}\exp\left(-\frac{1}{2}({x}-{\mu})^\mathrm{T}{\Sigma}^{-1}({x}-{\mu})\right)
+f\left(x\right)=\frac{1}{\sqrt{\left(2\pi\right)^{2}\left|\Sigma\right|}}\exp\left(-\frac{1}{2}\left({x}-{\mu}\right)^\mathrm{T}{\Sigma}^{-1}\left({x}-{\mu}\right)\right)
 \end{align}
 $$
 where $\left|\Sigma\right|$ is the determinant of $\Sigma$
@@ -233,7 +234,7 @@ Reference | [Wikipedia: Volume of the n-sphere](https://en.wikipedia.org/wiki/Sp
 **Ex. 2.3** Derive equation (2.24).
 $$
 \begin{equation}
-d(p, N) = \left(\ 1- \frac{1}{2}^{1/N} \right)^{1/p}
+d\left(p, N\right) = \left(\ 1- \frac{1}{2}^{1/N} \right)^{1/p}
 \end{equation}
 $$
 
@@ -242,14 +243,14 @@ $$
 First of all, let $r$ be the median distance from the origin to the closest data point. Then
 $$
 \begin{equation}
-P(\text{All } N \text{ points are further than r from the origin}) = \frac{1}{2}
+P\left(\text{All } N \text{ points are further than r from the origin}\right) = \frac{1}{2}
 \end{equation}
 $$
 
 Since points $x_i$ are independently distributed, which implies that
 $$
 \begin{equation}
-\frac{1}{2} = \prod_{i=1}^N P\left(\left\| x_i \right\| > r\right)
+\frac{1}{2} = \prod_{i=1}^N P\left(\left\Vert x_i \right\Vert > r\right)
 \end{equation}
 $$
 
@@ -257,8 +258,8 @@ and as points $x_i$ are uniformly distributed in the unit ball, we have
 
 $$
 \begin{align}
-P \left(\left\| x_i \right\| > r \right) &= 1- P\left(\left\| x_i \right\| \leq r \right)\\
-&= 1 - \frac{V_p(r)}{V_p(R)}\\
+P \left(\left\Vert x_i \right\Vert > r \right) &= 1- P\left(\left\Vert x_i \right\Vert \leq r \right) \\
+&= 1 - \frac{V_p\left(r\right)}{V_p\left(R\right)} \\
 &= 1- r^p
 \end{align}
 $$
@@ -274,15 +275,15 @@ $$
 and solving for $r$, we will have
 $$
 \begin{equation}
-d(p, N) = \left(\ 1- \frac{1}{2}^{1/N} \right)^{1/p}
+d\left(p, N\right) = \left(\ 1- \frac{1}{2}^{1/N} \right)^{1/p}
 \end{equation}
 $$
 
 For the sphere volume of $p$ dimension, we can refer to [Volume of the n-sphere](https://en.wikipedia.org/wiki/Sphere) for more detail. Here we demonstrate the formula:
 $$
 \begin{align}
-V_p({R}) = \frac{R^p}{n} \frac{2\pi^{p/2}}{\Gamma \left(n/2\right)}\\
-\Gamma(n/2) = \frac{\left(n-2\right)!!\sqrt{\pi}}{2^{\left(n-1\right)/2}}
+V_p\left({R}\right) = \frac{R^p}{n} \frac{2\pi^{p/2}}{\Gamma \left(n/2\right)}  \\
+\Gamma\left(n/2\right) = \frac{\left(n-2\right)!!\sqrt{\pi}}{2^{\left(n-1\right)/2}}
 \end{align}
 $$
 
@@ -438,7 +439,7 @@ $$
 In the proof we will use the following properties:
 
 1. If $N$ is large and $\mathcal{T}$ were selected at random, and assuming
-$E\left(X\right) = 0$, then $\mathbf{X}^T\mathbf{X} \rightarrow NCov(\mathbf{X})$.
+$E\left(X\right) = 0$, then $\mathbf{X}^T\mathbf{X} \rightarrow NCov\left(\mathbf{X}\right)$.
 1. Cyclic property of the trace operator: $\mathrm{trace}\left(AB\right) = \mathrm{trace}\left(AB\right)$.
 1. Both the trace and expectation operators are linear, so they can be interchanged: $E \circ trace = trace \circ E$.
 
@@ -466,14 +467,14 @@ Authors | [xdwangkai](https://github.com/xdwangkai)
 Date | 2015/9/9
 Reference | [Researchgate: A Solution Manual and Notes for: The Elements of Statistical Learning](http://www.researchgate.net/publication/237116664_A_Solution_Manual_and_Notes_for_the_Text_The_Elements_of_Statistical_Learning)
 
-**Ex. 2.6** Consider a regression problem with inputs $x_i$ and outputs $y_i$, and a parameterized model $f_\theta{(x)}$ to be fit by least squares. Show that if there are observations with _tied_ or _identical_ values of $x$, then the fit can be obtained from a  reduced weighted least squares problem.
+**Ex. 2.6** Consider a regression problem with inputs $x_i$ and outputs $y_i$, and a parameterized model $f_\theta{\left(x\right)}$ to be fit by least squares. Show that if there are observations with _tied_ or _identical_ values of $x$, then the fit can be obtained from a  reduced weighted least squares problem.
 
 **Proof**
 
-To fit the model $f_\theta{(x)}$ by least squares, we minimize
+To fit the model $f_\theta{\left(x\right)}$ by least squares, we minimize
 $$
 \begin{equation}
-RSS(\theta)=\sum_{k=1}^N\left(y_k-f_\theta(x_k)\right)^2
+RSS\left(\theta\right)=\sum_{k=1}^N\left(y_k-f_\theta\left(x_k\right)\right)^2
 \label{eq1}
 \end{equation}
 $$
@@ -482,7 +483,7 @@ as a function of $\theta$.
 As _reducible error_ and _irreducible error_ exist, even the _same_ input value of $x$ generate _different_ outputs value of $y$. Denote by $N_u$ the number of _unique_ inputs $x$, and assume that the $i$th $x$ will give $n_i$ different $y$, denote by $y_{ij}$, $1\le j\le n_i$. Rewrite Eq. $\eqref{eq1}$ as
 $$
 \begin{equation}
-RSS(\theta)=\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}\left(y_{ij}-f_\theta(x_i)\right)^2.
+RSS\left(\theta\right)=\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}\left(y_{ij}-f_\theta\left(x_i\right)\right)^2.
 \label{eq2}
 \end{equation}
 $$
@@ -490,8 +491,8 @@ $$
 By expanding the quadratic in Eq. $\eqref{eq2}$, we have
 $$
 \begin{align}
-RSS(\theta)&= \sum_{i=1}^{N_u}\sum_{j=1}^{n_i}\left(y_{ij}^2-2f_\theta(x_i)y_{ij}+f_\theta(x_i)^2\right)\\
-&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta(x_i)\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}\right)+f_\theta(x_i)^2\right)
+RSS\left(\theta\right)&= \sum_{i=1}^{N_u}\sum_{j=1}^{n_i}\left(y_{ij}^2-2f_\theta\left(x_i\right)y_{ij}+f_\theta\left(x_i\right)^2\right) \\
+&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta\left(x_i\right)\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}\right)+f_\theta\left(x_i\right)^2\right)
 \label{eq3}
 \end{align}
 $$
@@ -501,9 +502,9 @@ Now we get the _weighted_ item $n_i$. Next, we will rewrite the expressions in t
 In Eq. $\eqref{eq3}$ we notice the term $\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$, which means the average of all responses $y$ resulting from the same input $x_i$. To be briefly expressed, we define $\bar{y}_i=\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}$ and rewrite Eq. $\eqref{eq3}$ as
 $$
 \begin{align}
-RSS(\theta)&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta(x_i)\bar{y}_i+f_\theta(x_i)^2\right)\\
-&= \sum_{i=1}^{N_u}n_i\left(\bar{y}_i^2-2f_\theta(x_i)\bar{y}_i+f_\theta(x_i)^2\right)+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2}\\
-&= \sum_{i=1}^{N_u}n_i\left(\bar{y}_i-f_\theta(x_i)\right)^2+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2}
+RSS\left(\theta\right)&= \sum_{i=1}^{N_u}n_i\left(\frac{1}{n_i}\sum_{j=1}^{n_i}y_{ij}^2-2f_\theta\left(x_i\right)\bar{y}_i+f_\theta\left(x_i\right)^2\right) \\
+&= \sum_{i=1}^{N_u}n_i\left(\bar{y}_i^2-2f_\theta\left(x_i\right)\bar{y}_i+f_\theta\left(x_i\right)^2\right)+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2} \\
+&= \sum_{i=1}^{N_u}n_i\left(\bar{y}_i-f_\theta\left(x_i\right)\right)^2+\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2}
 \label{eq4}
 \end{align}
 $$
@@ -511,7 +512,7 @@ $$
 Once we get the measurements, i.e., the inputs $x_i$ and outputs $y_i$, the expression $\sum_{i=1}^{N_u}\sum_{j=1}^{n_i}y_{ij}^2-\sum_{i=1}^{N_u}{n_i\bar{y}_i^2}$ in Eq. $\eqref{eq4}$ won't change. Thus minimizing Eq. $\eqref{eq1}$ with respect to $\theta$ is equivalent to minimizing:
 $$
 \begin{equation}
-RSS(\theta)=\sum_{i=1}^{N_u}n_i\left(\bar{y}_i-f_\theta(x_i)\right)^2
+RSS\left(\theta\right)=\sum_{i=1}^{N_u}n_i\left(\bar{y}_i-f_\theta\left(x_i\right)\right)^2
 \end{equation}
 \label{eq5}
 $$
@@ -522,7 +523,7 @@ Now we compare Eq. $\eqref{eq5}$ with Eq. $\eqref{eq1}$:
 
 2. Each residual error is weighted by $n_i$ in Eq. $\eqref{eq5}$, so this is a _weighted_ least squares problem.
 
-Therefore, the fit of parameterized model $f_\theta{(x)}$ can be obtained from a  reduced weighted least squares problem.
+Therefore, the fit of parameterized model $f_\theta\left(x\right)$ can be obtained from a  reduced weighted least squares problem.
 
 ---
 

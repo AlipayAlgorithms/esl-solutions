@@ -317,3 +317,87 @@ where $\mathbf{U}$ is defined as $\eqref{eq:q-complemented-as-u}$.
 
 Because $\epsilon_i$ are independent normal random variables and $\mathbf{U}$ is unitary, then $z_i$ are independent normal random variables, too. Then we have $\frac{RSS_1}{\sigma^2} \sim \chi_{N-p_1-1}^2$, $\frac{RSS_0-RSS_1}{\sigma^2} \sim \chi_{p_1-p_0}^2$, and those two are independent of each other. By the definition of [F-distribution][wikipedia-f-distribution], the $F$ statistic in $\eqref{eq:f-statistic}$ follows the $F$ distribution with $p_1-p_0$ and $N−p_1−1$ degrees of freedom respectively.
 
+---
+
+## Ex. 3.1 f-statistic-and-z-score
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/28
+Reference | [Weatherwax and Epstein's solution][weatherwax-epstein-solution], [Wikipedia: Triangular matrix][wikipedia-triangular-matrix]
+
+[weatherwax-epstein-solution]: http://waxworksmath.com/Authors/G_M/Hastie/WriteUp/weatherwax_epstein_hastie_solutions_manual.pdf
+[wikipedia-triangular-matrix]: https://en.wikipedia.org/wiki/Triangular_matrix
+
+**Ex. 3.1** Show that the $F$ statistic (3.13) for dropping a single coefficient from a model is equal to the square of the corresponding $z$-score (3.12).
+
+**Proof**
+
+Our proof is inspired by [Weatherwax and Epstein's solution][weatherwax-epstein-solution] whereas ours is more compact.
+
+Rearrange the columns of $\mathbf{X}$ by putting $\mathbf{x_j}$ to the last position, under **QR** decomposition
+
+$$
+\begin{align}
+\mathbf{X}
+&= \mathbf{Z}\mathbf{D}^{-1}\mathbf{D}\mathbf{\Gamma} \\
+&= \mathbf{Q}\mathbf{R}, \\
+\hat{\beta} &= \mathbf{R}^{-1}\mathbf{Q}^T\mathbf{y}, \\
+\hat{y} &= \mathbf{Q}\mathbf{Q}^T\mathbf{y},
+\end{align}
+$$
+
+the error reduction by indroducing the new variable $X_j$ is
+
+$$
+\begin{equation}
+RSS_0-RSS_1 = \left<q_j, \mathbf{y}\right>.
+\end{equation}
+$$
+
+This fact is well explained in **Algorithm 3.1** on page 54.
+
+$\mathbf{R}$ is an [upper triangular matrix][wikipedia-triangular-matrix], the inverse of it
+$\mathbf{R}^{-1}$ is also an upper triangular matrix, and the diagonal entries of $\mathbf{R}^{-1}$ are reciprocal of the corresponding entries in $\mathbf{R}$. $\mathbf{R}^T$ and $\left(\mathbf{R}^T\right)^{-1}$ are hence lower triangular matrices.
+
+It can be seen that
+
+$$
+\begin{equation}
+\hat{\beta_j}^2 = \left<q_j,\mathbf{y}\right> \left/\right. r_{jj}^2,
+\end{equation}
+$$
+
+where $r_{jj}$ is the $j$th (the last) diagonal entries of $\mathbf{R}$.
+
+Because
+
+$$
+\begin{align}
+\mathbf{X}^T\mathbf{X}
+&= \mathbf{R}^T\mathbf{Q}^T\mathbf{Q}\mathbf{R} = \mathbf{R}^T\mathbf{R}, \\
+\left(\mathbf{X}^T\mathbf{X}\right)^{-1}
+&= \mathbf{R}^{-1}\left(\mathbf{R}^T\right)^{-1},
+\end{align}
+$$
+
+$v_j$, the $j$th (the last) diagonal element of $\left(\mathbf{X}^T\mathbf{X}\right)^{-1}$, will be $1 \left/\right. r_{jj}^2$.
+
+Consequently,
+
+$$
+\begin{align}
+z_j^2
+&= \left(\frac{\hat{\beta_j}}{\hat{\sigma}\sqrt{v_j}}\right)^2
+= \frac{\hat{\beta_j}^2}{\hat{\sigma}^2v_j}
+= \frac{\left<q_j,\mathbf{y}\right> \left/\right. r_{jj}^2}{\hat{\sigma}^2\left(1 \left/\right. r_{jj}^2\right)}
+= \frac{\left<q_j,\mathbf{y}\right>}{\hat{\sigma}^2}, \\
+F
+&= \frac{\left. \middle(RSS_0-RSS_1\middle) \middle/ \middle(p_1-p_0\middle) \right.}{\left. RSS_1 \middle/ \middle(N-p_1-1\middle) \right.}
+= \frac{\left<q_j, \mathbf{y}\right>}{\hat{\sigma}^2};
+\end{align}
+$$
+
+Q.E.D.
+
