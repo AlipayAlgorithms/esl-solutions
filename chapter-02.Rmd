@@ -345,6 +345,7 @@ Note that the bias-variance decomposition of MSE does not depend on any specific
 
 $$
 \begin{align}
+\label{eq:ex-2.5-epe-expection}
 EPE\left(x_0\right)
 &= E_{y_0|x_0}E_{\mathcal{T}} \left[y_0 - \hat{y}_0\right]^2 \\
 &= E_{y_0|x_0}E_{\mathcal{T}} \left[\left(y_0 - f\left(x_0\right)\right) - \left(\hat{y}_0- f\left(x_0\right)\right)\right]^2 \\
@@ -524,6 +525,144 @@ Now we compare Eq. $\eqref{eq5}$ with Eq. $\eqref{eq1}$:
 2. Each residual error is weighted by $n_i$ in Eq. $\eqref{eq5}$, so this is a _weighted_ least squares problem.
 
 Therefore, the fit of parameterized model $f_\theta\left(x\right)$ can be obtained from a  reduced weighted least squares problem.
+
+---
+
+## Ex. 2.7 conditional-unconditional-bias-variance
+
+Item | Description
+--- | ---
+Authors | [squall1988](https://github.com/squall1988), [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/28
+
+**Ex. 2.7 ** Suppose we have a sample of $N$ pairs $x_i$, $y_i$ drawn i.i.d. from the distribution characterized as follows:
+
+$x_i \sim h\left(x\right)$, the design density
+
+$y_i = f\left(x_i\right) + \epsilon_i$, $f$ is the regression function
+
+$\epsilon_i \sim \left(0, \sigma^2\right)$ (mean zero, variance $\sigma_2$)
+
+We construct an estimator for $f$ linear in the $y_i$,
+
+$$
+\begin{equation}
+\hat{f}\left(x_0\right) = \sum_{i=1}^{N} \mathcal{l}_i\left(x_0; \mathcal{X}\right)y_i
+\end{equation}
+$$
+
+where the weights $\mathcal{l}_i\left(x_0; \mathcal{X}\right)$ do not depend on the $y_i$, but do depend on the entire training sequence of $x_i$, denoted here by $\mathcal{X}$.
+
+\(a) Show that linear regression and $k$-nearest-neighbor regression are members of this class of estimators. Describe explicitly the weights $\mathcal{l}_i\left(x_0; \mathcal{X}\right)$ in each of these cases.
+
+\(b) Decompose the conditional mean-squared error
+
+$$
+\begin{align}
+\label{eq:ex-2.7-conditional-mse}
+E_{\mathcal{Y}|\mathcal{X}} \left(f\left(x_0\right) − \hat{f}\left(x_0\right)\right)^2
+\end{align}
+$$
+
+into a conditional squared bias and a conditional variance component. Like $\mathcal{X}$, $\mathcal{Y}$ represents the entire training sequence of $y_i$.
+
+\(c) Decompose the (unconditional) mean-squared error
+
+$$
+\begin{align}
+\label{eq:ex-2.7-unconditional-mse}
+E_{\mathcal{Y},\mathcal{X}} \left(f\left(x_0\right) − \hat{f}\left(x_0\right)\right)^2
+\end{align}
+$$
+
+into a squared bias and a variance component.
+
+\(d) Establish a relationship between the squared biases and variances in the above two cases.
+
+**Proof (a)**
+
+When we use least square method to estimate the relationship between the $X$ and $Y$
+
+$$
+\begin{equation}
+\hat \beta = \left(\textbf{X}^T\textbf{X}\right)^{-1}\textbf{X}^T\textbf{Y}
+\end{equation}
+$$
+
+and the $\hat{f}\left(x_0\right)$ can be written as below:
+
+$$
+\begin{align}
+\hat{f}\left(x_0\right) &= x_0^T  \hat \beta \\
+& = x_0^T \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{Y}
+\end{align}
+$$
+
+so the $\mathcal{l}\left(x_0; \mathcal{X}\right)$ is the $i$th element of the  $x_0^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T$.
+
+When we use $k$-nearest-neighbor to estimate the relationship between $\mathbf{X}$ and $\mathbf{Y}$, the $\mathcal{l}\left(x_0; \mathcal{X}\right)$ can be written as below:
+
+$$
+\begin{align}
+\mathcal{l}\left(x_0; \mathcal{X}\right) = \frac{1}{k}\sum_{i=1}^{N} I\left(x_0,k;x_i\right)y_i
+\end{align}
+$$
+
+where $I\left(x_0,k; x_i\right)$ is an indicator function which is used to indicate if $x_i$ is one of the $k$-nearest-neighbor of $x_0$.
+
+**Proof (b)**
+
+Similar to what we have proven in $\eqref{eq:ex-2.5-epe-expection}$, equation $\eqref{eq:ex-2.7-conditional-mse}$ can be reshaped as below:
+
+$$
+\begin{align}
+\label{eq:ex-2.7-conditional-mse-decomposed}
+E_{\mathcal{Y}|\mathcal{X}}\left (f \left(x_0\right) - \hat{f}\left(x_0\right)\right)^2
+& = \left(f\left(x_0\right) - E_{\mathcal{Y}|\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)\right)^2  + \left(E_{\mathcal{Y}|\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)^2 - {E_{\mathcal{Y}|\mathcal{X}}}^2\left(\hat{f}\left(x_0\right)\right)\right) \\
+&= {Bias_{\mathcal{Y}|\mathcal{X}}}^2\left(f\left(x_0\right)\right)+ Var_{\mathcal{Y}|\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)
+\end{align}
+$$
+
+**Proof (c)**
+
+Similar to what we have proven in $\eqref{eq:ex-2.5-epe-expection}$, equation $\eqref{eq:ex-2.7-unconditional-mse}$ can be reshaped as below:
+
+$$
+\begin{align}
+\label{eq:ex-2.7-unconditional-mse-decomposed}
+E_{\mathcal{Y},\mathcal{X}}\left(f\left(x_0\right) - \hat{f}\left(x_0\right)\right)^2
+& = \left(f\left(x_0\right) - E_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)\right)^2  + \left(E_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)^2 - {E_{\mathcal{Y},\mathcal{X}}}^2\left(\hat{f}\left(x_0\right)\right)\right) \\
+&= {Bias_{\mathcal{Y},\mathcal{X}}}^2\left(f\left(x_0\right)\right)+ Var_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)
+\end{align}
+$$
+
+**Proof (d)**
+
+Let's calculate the expectation of the squared bias and variance of $\eqref{eq:ex-2.7-conditional-mse-decomposed}$ on $\mathcal{X}$ and then compare them against the counterparts of $\eqref{eq:ex-2.7-unconditional-mse-decomposed}$.
+
+$$
+\begin{align}
+E_{\mathcal{X}} {Bias_{\mathcal{Y}|\mathcal{X}}}^2\left(f\left(x_0\right)\right) - {Bias_{\mathcal{Y},\mathcal{X}}}^2\left(f\left(x_0\right)\right)
+&= E_{\mathcal{X}} \left(f\left(x_0\right) - E_{\mathcal{Y}|\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)\right)^2 - \left(f\left(x_0\right) - E_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)\right)^2 \\
+&= \left[f\left(x_0\right)^2 - 2f\left(x_0\right)E_{\mathcal{X},\mathcal{Y}}\hat{f}\left(x_0\right) + E_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2\right] - \left[f\left(x_0\right)^2 - 2f\left(x_0\right)E_{\mathcal{X},\mathcal{Y}}\hat{f}\left(x_0\right) + \left(E_{\mathcal{X}}E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2\right] \\
+&= E_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2 - \left(E_{\mathcal{X}}E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2 \\
+&= Var_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)
+\end{align}
+$$
+
+$$
+\begin{align}
+E_{\mathcal{X}} Var_{\mathcal{Y}|\mathcal{X}}\left(\hat{f}\left(x_0\right)\right) - Var_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)
+&= E_{\mathcal{X}} \left(E_{\mathcal{Y}|\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)^2 - {E_{\mathcal{Y}|\mathcal{X}}}^2\left(\hat{f}\left(x_0\right)\right)\right) - \left(E_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)^2 - {E_{\mathcal{Y},\mathcal{X}}}^2\left(\hat{f}\left(x_0\right)\right)\right) \\
+&= \left[E_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)^2 - E_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2\right] - \left[E_{\mathcal{Y},\mathcal{X}}\left(\hat{f}\left(x_0\right)\right)^2 - \left(E_{\mathcal{X}}E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2\right]\\
+&= \left(E_{\mathcal{X}}E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2 - E_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)^2 \\
+&= -Var_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)
+\end{align}
+$$
+
+From the above, we can see that the order of calculation matters. If we calculate the conditional squared bias on fixed training input points then calculate the expectation of that by varying training input points, the expected conditional squared bias is **greater** than the unconditional squared bias by $Var_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)$. The same result applies to the variance, except that the expected conditional variance is **lesser** than the unconditional variance by $Var_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right)$.
+
+When the true relationship between input and response variables is linear, then the estimation $\hat{f}\left(x_0\right)$ is (both conditional and unconditional) unbiased, then $E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right) = 0$ and hence $Var_{\mathcal{X}}\left(E_{\mathcal{Y}|\mathcal{X}}\hat{f}\left(x_0\right)\right) = 0$.
 
 ---
 
@@ -718,4 +857,3 @@ $$
 where $\eqref{eq:ex-2.9-independence}$ holds because $\mathbf{X}$, $\mathbf{\epsilon}$, $\tilde{\mathbf{X}}$ and $\tilde{\mathbf{\epsilon}}$ are independent of each other, and last inequality holds because $\mathbf{\epsilon}^T\tilde{H}^T\tilde{H}\mathbf{\epsilon} = \left(\tilde{H}\mathbf{\epsilon}\right)^T\left(\tilde{H}\mathbf{\epsilon}\right) \ge 0$.
 
 Finally we proved the result.
-
