@@ -222,7 +222,7 @@ We make up a $N\times\left(N-p-1\right)$ orthogonal matrix $\mathbf{Q}_r$ satisf
 $$
 \begin{equation}
 \label{eq:q-complemented-as-u}
-\mathbf{U} = \left[ \begin{array}{cc} \mathbf{Q} & \mathbf{Q}_r \end{array} \right].
+\mathbf{U} = \left[\begin{array}{cc} \mathbf{Q} & \mathbf{Q}_r \end{array}\right].
 \end{equation}
 $$
 
@@ -286,7 +286,7 @@ $$
 \begin{align}
 \mathbf{X}
 &= \mathbf{Q}\mathbf{R} \\
-&= \left[ \begin{array}{cc} \mathbf{Q}_0 & \mathbf{Q}_s \end{array} \right] \left[ \begin{array}{cc} \mathbf{R}_0 & \mathbf{R}_{s1} \\ \mathbf{0} & \mathbf{R}_{s2} \end{array} \right], \\
+&= \left[\begin{array}{cc} \mathbf{Q}_0 & \mathbf{Q}_s \end{array}\right] \left[\begin{array}{cc} \mathbf{R}_0 & \mathbf{R}_{s1} \\ \mathbf{0} & \mathbf{R}_{s2} \end{array}\right], \\
 \mathbf{X}_0 &= \mathbf{Q}_0\mathbf{R}_0,
 \end{align}
 $$
@@ -992,6 +992,86 @@ gleason | −0.02 | 0.15 | −0.15
 pgg45 | 0.27 | 0.15 | 1.74
 
 On page (49) of the book and also in solution to Ex. 3.1, we have shown that the $F$ statistic (3.13) for dropping a single coefficient from a model is equal to the square of the corresponding $z$-score (3.12), where the $F$ statistic for dropping a single coefficient is the RSS increament divided by $\hat{\sigma}^2$. Therefore, for backward stepwise regression we should drop the variable with the smallest absolute $z$-score. In our case in Table 3.2, it is the variable **gleason**.
+
+---
+
+## Ex. 3.11 multivariate-linear-regression
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/4
+
+**Ex. 3.11** Show that the solution to the multivariate linear regression problem (3.40) is given by (3.39). What happens if the covariance matrices $\mathbf{\Sigma}_i$ are different for each observation?
+
+**Proof**
+
+If the errors $\epsilon = \left(\epsilon_1, \dots, \epsilon_K\right)$ are correlated with $\mathrm{Cov}\left(\epsilon\right) = \mathbf{\Sigma}$, then the multivariate weighted criterion
+
+$$
+\begin{equation}
+RSS\left(\mathbf{B},\mathbf{\Sigma}\right) = \sum_{i=1}^N\left(y_i-f\left(x_i\right)\right)^T\mathbf{\Sigma}^{-1}\left(y_i-f\left(x_i\right)\right)
+\end{equation}
+$$
+
+is used in finding the fit, where $f\left(x\right)$ is the vector function $\left(f_1\left(x\right), \dots, f_K\left(x\right)\right)^T$.
+
+In what follows, we will follow [IFEM.AppF.pdf: Matrix Calculus](http://www.colorado.edu/engineering/cas/courses.d/IFEM.d/IFEM.AppF.d/IFEM.AppF.pdf) for the definition of derivatives of vectors and matrices.
+
+Starting from the derative of a column of coefficient $\mathbf{\beta}_k$,
+
+$$
+\begin{align}
+\frac{\partial RSS\left(\mathbf{B},\mathbf{\Sigma}\right)}{\partial \mathbf{\beta}_k}
+&= \sum_{i=1}^N\frac{\partial}{\partial \mathbf{\beta}_k}\left(y_i-f\left(x_i\right)\right)^T\mathbf{\Sigma}^{-1}\left(y_i-f\left(x_i\right)\right) \\
+&= \sum_{i=1}^N\left[\frac{\partial}{\partial f_k\left(x_i\right)}\left(y_i-f\left(x_i\right)\right)^T\mathbf{\Sigma}^{-1}\left(y_i-f\left(x_i\right)\right)\right] \frac{\partial f_k\left(x_i\right)}{\partial \mathbf{\beta}_k} \\
+&= -2\sum_{i=1}^N\left[\left(y_i-f\left(x_i\right)\right)^T{\mathbf{\Sigma}^{-1}}_k\right] x_i \\
+&= -2\sum_{i=1}^Nx_i \left[\left(y_i-f\left(x_i\right)\right)^T{\mathbf{\Sigma}^{-1}}_k\right],
+\end{align}
+$$
+
+where ${\mathbf{\Sigma}^{-1}}_k$ denotes the $k$th column of $\mathbf{\Sigma}^{-1}$, we get the full derivative of $\mathbf{B}$:
+
+$$
+\begin{align}
+\frac{\partial RSS\left(\mathbf{B},\mathbf{\Sigma}\right)}{\partial \mathbf{B}}
+&= \left[\begin{array}{ccc} \frac{\partial}{\partial \mathbf{\beta}_1} & \dots & \frac{\partial}{\partial \mathbf{\beta}_K} \end{array}\right] RSS\left(\mathbf{B},\mathbf{\Sigma}\right) \\
+&= -2\sum_{i=1}^Nx_i \left[\begin{array}{ccc} \left(y_i-f\left(x_i\right)\right)^T{\mathbf{\Sigma}^{-1}}_1 & \dots & \left(y_i-f\left(x_i\right)\right)^T{\mathbf{\Sigma}^{-1}}_K \end{array}\right] \\
+\label{eq:ex-3.11-separate-derivative}
+&= -2\sum_{i=1}^Nx_i \left(y_i-f\left(x_i\right)\right)^T\mathbf{\Sigma}^{-1}.
+\end{align}
+$$
+
+Because $\mathbf{\Sigma}$ is common to all observations, then $\eqref{eq:ex-3.11-separate-derivative}$ can be _piled_ as matrix multiplications
+
+$$
+\begin{align}
+\frac{\partial RSS\left(\mathbf{B},\mathbf{\Sigma}\right)}{\partial \mathbf{B}}
+&= -2\sum_{i=1}^Nx_i \left(y_i-f\left(x_i\right)\right)^T\mathbf{\Sigma}^{-1} \\
+\label{eq:ex-3.11-same-sigma}
+&= -2\sum_{i=1}^Nx_i \left(y_i-\mathbf{B}^Tx_i\right)^T\mathbf{\Sigma}^{-1} \\
+\label{eq:ex-3.11-piling}
+&= -2\mathbf{X}^T\left(\mathbf{Y}-\mathbf{X}\mathbf{B}\right)\mathbf{\Sigma}^{-1}.
+\end{align}
+$$
+
+Setting the derivative to zero, we finally get
+
+$$
+\begin{align}
+-2\mathbf{X}^T\left(\mathbf{Y}-\mathbf{X}\hat{\mathbf{B}}\right)\mathbf{\Sigma}^{-1} & = \mathbf{0}, \\
+\label{eq:ex-3.11-sigma-cancelled}
+\mathbf{X}^T\left(\mathbf{Y}-\mathbf{X}\hat{\mathbf{B}}\right) & = \mathbf{0}, \\
+\mathbf{X}^T\mathbf{Y} & = \mathbf{X}^T\mathbf{X}\hat{\mathbf{B}}, \\
+\hat{\mathbf{B}} &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{Y}.
+\end{align}
+$$
+
+Equation $\eqref{eq:ex-3.11-sigma-cancelled}$ holds because $\mathbf{\Sigma}^{-1}$ is full rank.
+
+This result shows that if the errors are _statically_ correlated (the correlation does not vary with observations), the solution of the coefficients are the same as in the uncorrelated scenario, as if the correlations are ignored.
+
+If the covariance matrices $\mathbf{\Sigma}_i$ are different for each observation, the common $\mathbf{\Sigma}^{-1}$ will be replaced with $\mathbf{\Sigma}_i^{-1}$ in $\eqref{eq:ex-3.11-same-sigma}$, hence we cannot get the simplified _piled_ matrix operation as in $\eqref{eq:ex-3.11-piling}$.
 
 ---
 
