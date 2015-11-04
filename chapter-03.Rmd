@@ -50,6 +50,7 @@ Var\left(\hat{\beta}\right)
 &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T E\left[\left(\mathbf{y}-E\left(\mathbf{y}\right)\right) \left(\mathbf{y}-E\left(\mathbf{y}\right)\right)^T\right] \mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \\
 &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T \sigma^2I \mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \\
 &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{X} \left(\mathbf{X}^T\mathbf{X}\right)^{-1} \sigma^2 \\
+\label{eq:note-beta-hat-variance}
 &= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\sigma^2.
 \end{align}
 $$
@@ -401,3 +402,217 @@ $$
 
 Q.E.D.
 
+---
+
+## Ex. 3.2 confidence-intervals
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/10/29
+
+**Ex. 3.2** Given data on two variables $X$ and $Y$ , consider fitting a cubic polynomial regression model $f\left(X\right) = \sum_{j=0}^3\beta_jX^j$. In addition to plotting the fitted curve, you would like a 95% confidence band about the curve. Consider the following two approaches:
+
+1. At each point $x_0$, form a 95% confidence interval for the linear function $a^T\beta = \sum_{j=0}^3\beta_jx_0^j$.
+1. Form a 95% confidence set for $\beta$ as in (3.15), which in turn generates confidence intervals for $f\left(x_0\right)$.
+
+How do these approaches differ? Which band is likely to be wider? Conduct a small simulation experiment to compare the two methods.
+
+**Solution**
+
+For the first case, $a^T\hat{\beta}$ follows a normal distribution $N\left(a^T\beta, a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}a \cdot \sigma^2\right)$ (see $\eqref{eq:note-beta-hat-variance}$ for the variance of $\hat{\beta}$). The confidence interval of $a^T\beta$ is then given by
+
+$$
+\begin{equation}
+C_{a^T\beta}^l = \left(a^T\hat{\beta}-1.96\sqrt{a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}a}\hat{\sigma},\; a^T\hat{\beta}+1.96\sqrt{a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}a}\hat{\sigma}\right)
+\end{equation}
+$$
+
+approximately, where $1.96 = z^{\left(1-0.025\right)}$ is the $0.975$ percentile of the normal distribution (see also [Wikipedia: Standard normal table](https://en.wikipedia.org/wiki/Standard_normal_table)). We can do this approximation when the size of training data $N$ is big enough so that $t_{N-p-1}$ approaches $N\left(0, 1\right)$.
+
+For the second case, we need to find the mininum and maximum of $a^T\beta$ when $\beta$ is in the confidence set given by (3.15)
+
+$$
+\begin{equation}
+C_{\beta} = \left\{\beta\middle|\left(\hat{\beta}-\beta\right)^T\mathbf{X}^T\mathbf{X}\left(\hat{\beta}-\beta\right) \le \hat{\sigma}^2{\chi_{p+1}^2}^{\left(1-\alpha\right)}\right\}.
+\end{equation}
+$$
+
+In order to find the radius of the confidence interval under the constraints that $\beta$ is in the ellipse above, we need to find
+
+$$
+\begin{equation}
+\label{eq:ex-3.2-beta-maximization}
+\beta^r = \mathop{\mathrm{argmax}}_{\beta} \left\{a^T\left(\hat{\beta}-\beta\right) + \lambda\left[\left(\hat{\beta}-\beta\right)^T\mathbf{X}^T\mathbf{X}\left(\hat{\beta}-\beta\right) - S\right]\right\},
+\end{equation}
+$$
+
+where $S = 9.49\hat{\sigma}^2$ and $9.49 = {\chi_4^2}^{\left(1-0.95\right)}$ is the $0.95$ percentile of the chi-squared distribution (see also [Wikipedia: Chi-squared distribution](https://en.wikipedia.org/wiki/Chi-squared_distribution)).
+
+Differentiating the Lagrangian form in the braces of $\eqref{eq:ex-3.2-beta-maximization}$ with respect to $\lambda$ and $\beta$ and set the derivatives to zero we obtain
+
+$$
+\begin{align}
+\left(\hat{\beta}-\beta\right)^T\mathbf{X}^T\mathbf{X}\left(\hat{\beta}-\beta\right) - S &= 0 \\
+\label{eq:ex-3.2-partial-to-beta}
+a + 2\lambda\mathbf{X}^T\mathbf{X}\left(\hat{\beta}-\beta\right) &= 0.
+\end{align}
+$$
+
+Continue on $\eqref{eq:ex-3.2-partial-to-beta}$,
+
+$$
+\begin{align}
+\left(\hat{\beta}-\beta\right)^Ta + 2\lambda\left(\hat{\beta}-\beta\right)^T\mathbf{X}^T\mathbf{X}\left(\hat{\beta}-\beta\right) = 0 \\
+2\lambda = -\frac{\left(\hat{\beta}-\beta\right)^Ta}{S} \\
+a - \frac{\left(\hat{\beta}-\beta\right)^Ta}{S} \mathbf{X}^T\mathbf{X}\left(\hat{\beta}-\beta\right) = 0 \\
+\left(\hat{\beta}-\beta\right)^Ta \left(\hat{\beta}-\beta\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}aS \\
+\left[\left(\hat{\beta}-\beta\right)^Ta\right] \left[a^T\left(\hat{\beta}-\beta\right)\right] = a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}aS \\
+a^T\left(\hat{\beta}-\beta\right) = \sqrt{a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}aS},
+\end{align}
+$$
+
+we reach
+
+$$
+\begin{equation}
+a^T\left(\hat{\beta}-\beta^r\right) = \sqrt{a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}aS} = 3.08\sqrt{a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}a}\hat{\sigma}.
+\end{equation}
+$$
+
+The confidence interval of $a^T\beta$ is then given by
+
+$$
+\begin{equation}
+C_{a^T\beta}^{\beta-\mathrm{set}} = \left(a^T\hat{\beta}-3.08\sqrt{a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}a}\hat{\sigma},\; a^T\hat{\beta}+3.08\sqrt{a^T\left(\mathbf{X}^T\mathbf{X}\right)^{-1}a}\hat{\sigma}\right).
+\end{equation}
+$$
+
+We can see that the band of $C_{a^T\beta}^{\beta-\mathrm{set}}$ is wider than that of $C_{a^T\beta}^l$, it is because that some $\beta$ not in $C_{\beta}$ can still make $a^T\beta$ close to $a^T\hat{\beta}$ enough. Therefore if we are more interested in the confidence of the prediction rather than the confidence of the parameter estimation, we should use $C_{a^T\beta}^l$.
+
+**Code**
+
+Here we give our code of confidence interval calculation and plotting.
+
+```{r, fig.width = 12, fig.height = 9}
+set.seed(32)
+
+# ------------------------------------------------------------
+# training data generation
+# ------------------------------------------------------------
+
+training.size <- 100
+df <- training.size - 4
+
+CalcFeatures <- function(x1) {
+  x2 <- x1 ^ 2
+  x3 <- x1 ^ 3
+  cbind(x0=rep(1, length(x1)), x1=x1, x2=x2, x3=x3)
+}
+
+error <- rnorm(training.size, sd=2)
+beta <- c(rnorm(1), rnorm(1, mean=2), rnorm(1, mean=1), rnorm(1, mean=0))
+
+x <- CalcFeatures(rnorm(training.size))
+y <- x %*% beta + error
+train.data <- data.frame(x)
+train.data$y = y
+
+plot(train.data$x1, train.data$y, main='Confidence Intervals of Cubic of X',
+     xlab='input', ylab='response', lwd=2, cex=1.5)
+
+# ------------------------------------------------------------
+# model fitting
+# ------------------------------------------------------------
+
+lm.fit <- lm(y ~ x1+x2+x3, data=train.data)
+beta.hat <- coef(lm.fit)
+
+x.range <- seq(min(train.data$x1), max(train.data$x1), length.out=100)
+test.x <- CalcFeatures(x.range)
+prediction.y <- predict(lm.fit, as.data.frame(test.x), interval='confidence')
+fitted.values <- as.data.frame(prediction.y)
+
+# ------------------------------------------------------------
+# confidence bands calculation
+# ------------------------------------------------------------
+
+test.data <- data.frame(test.x)
+
+sigma.hat <- sqrt(sum(lm.fit$residuals^2) / df)
+sample.cov <- t(x) %*% x
+inv.sample.cov <- solve(sample.cov)
+t.quantile <- qt(0.975, df)
+chi.quantile <- qchisq(0.95, 4)
+
+bands <- apply(test.data, 1, function(x) {
+  fitted <- x %*% beta.hat
+  factor <- sqrt(t(x) %*% inv.sample.cov %*% x) * sigma.hat
+  linear.band <- factor * t.quantile
+  beta.set.band <- factor * sqrt(chi.quantile)
+  c(fitted=fitted, linear.band=linear.band, beta.set.band=beta.set.band)
+})
+bands <- as.data.frame(t(bands))
+
+AssertEqual <- function(expected, actual) {
+  stopifnot(abs(expected - actual) < 1e-7)
+}
+
+AssertEqual(fitted.values$fit, bands$fitted)
+AssertEqual(fitted.values$upr - fitted.values$fit, bands$linear.band)
+
+# ------------------------------------------------------------
+# boundary beta curves
+# ------------------------------------------------------------
+
+svd.decomposed <- svd(sample.cov)
+d.sqrt <- matrix(0, ncol=4, nrow=4)
+for (i in 1:4) {
+  d.sqrt[i, i] <- sqrt(svd.decomposed$d[i])
+}
+a.matrix <- d.sqrt %*% t(svd.decomposed$v)
+inv.a.matrix <- solve(a.matrix)
+length.bound <- sigma.hat * sqrt(chi.quantile)
+
+SampleBoundaryBeta <- function() {
+  direction <- rnorm(4)
+  circle.point <- direction / sqrt(sum(direction^2)) * length.bound
+  inv.a.matrix %*% circle.point + beta.hat
+}
+
+DrawBoundaryBeta <- function(beta) {
+  lines(test.data$x1, test.x %*% beta,
+        col='darkgray', lty='dotted', lwd=1)
+}
+
+for (i in 1:100) {
+  beta.sampled <- SampleBoundaryBeta()
+  DrawBoundaryBeta(beta.sampled)
+}
+
+# ------------------------------------------------------------
+# draw other more important curves
+# ------------------------------------------------------------
+
+lines(test.data$x1, bands$fitted - bands$beta.set.band,
+      col='blue', lty='longdash', lwd=2)
+lines(test.data$x1, bands$fitted + bands$beta.set.band,
+      col='blue', lty='longdash', lwd=2)
+lines(test.data$x1, fitted.values$lwr,
+      col='purple', lty='longdash', lwd=2)
+lines(test.data$x1, fitted.values$upr,
+      col='purple', lty='longdash', lwd=2)
+lines(test.data$x1, fitted.values$fit,
+      col='green', lty='solid', lwd=2)
+lines(test.data$x1, test.x %*% beta,
+      col='red', lty='solid', lwd=2)
+
+```
+
+In the figure above, the plots are the training data points, the red solid line the true model curve (excluding noise), the green solid line the linear regression fit.
+
+The purple dashed lines denote the lower and upper confidence intervals which are got from the ```lm``` fit. That confidence interval is also calucated in our code and verified against what we got from the ```lm``` fit. Note that we use the percentile of Student's $t$-distribution instead of the percentile of the standard normal distribution in order to accurately match the ```lm``` fit result.
+
+The blue dashed lines denote the lower and upper confidence intervals based on the confidence set of $\beta$. It is wider than the normal confidence interval. The dark gray dotted lines are got by using the $\beta$ at the boundary of the confidence set of $\beta$. It can been see that they are well bounded by the blue confidence bands but are not bounded by the purple one.
+
+The sampling of the boundary $\beta$ is a little bit tricky. We use the SVD of $\mathbf{X}^T\mathbf{X}$ to achieve that.
