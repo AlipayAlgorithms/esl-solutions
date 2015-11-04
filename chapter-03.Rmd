@@ -153,7 +153,7 @@ RSS\left(\hat{\beta}\right)
 \end{align}
 $$
 
-where $z_i = \left<u_i, \mathbf{\epsilon}\right>$ is the inner product between the $i$th column of $U$ and $\mathbf{\epsilon}$. It is easy to show that all the $z_i$ follow Gaussian distributions with variance $\sigma^2$ (norms of $u_i$ are 1) and are independent of each other (columns of $U$ are orthogonal of each other), in other words, $RSS\left(\hat{\beta}\right)$ is a sum of squared $N-p-1$ independent normal variables. By definition, $\left. RSS\middle(\hat{\beta}\middle)\middle/\sigma^2 \right.$ follows a [Chi-squared distribution][wikipedia-chi-squared-distribution]:
+where $z_i = \left<u_i, \mathbf{\epsilon}\right>$ is the inner product between the $i$th column of $U$ and $\mathbf{\epsilon}$. It is easy to show that all the $z_i$ follow Gaussian distributions with variance $\sigma^2$ (norms of $u_i$ are 1) and are independent of each other (columns of $U$ are orthogonal to each other), in other words, $RSS\left(\hat{\beta}\right)$ is a sum of squared $N-p-1$ independent normal variables. By definition, $\left. RSS\middle(\hat{\beta}\middle)\middle/\sigma^2 \right.$ follows a [Chi-squared distribution][wikipedia-chi-squared-distribution]:
 
 $$
 \begin{equation}
@@ -353,7 +353,7 @@ the error reduction by indroducing the new variable $X_j$ is
 
 $$
 \begin{equation}
-RSS_0-RSS_1 = \left<q_j, \mathbf{y}\right>.
+RSS_0-RSS_1 = \left<q_j, \mathbf{y}\right>^2.
 \end{equation}
 $$
 
@@ -366,7 +366,7 @@ It can be seen that
 
 $$
 \begin{equation}
-\hat{\beta_j}^2 = \left<q_j,\mathbf{y}\right> \left/\right. r_{jj}^2,
+\hat{\beta_j}^2 = \left<q_j,\mathbf{y}\right>^2 \left/\right. r_{jj}^2,
 \end{equation}
 $$
 
@@ -392,11 +392,11 @@ $$
 z_j^2
 &= \left(\frac{\hat{\beta_j}}{\hat{\sigma}\sqrt{v_j}}\right)^2
 = \frac{\hat{\beta_j}^2}{\hat{\sigma}^2v_j}
-= \frac{\left<q_j,\mathbf{y}\right> \left/\right. r_{jj}^2}{\hat{\sigma}^2\left(1 \left/\right. r_{jj}^2\right)}
-= \frac{\left<q_j,\mathbf{y}\right>}{\hat{\sigma}^2}, \\
+= \frac{\left<q_j,\mathbf{y}\right>^2 \left/\right. r_{jj}^2}{\hat{\sigma}^2\left(1 \left/\right. r_{jj}^2\right)}
+= \frac{\left<q_j,\mathbf{y}\right>^2}{\hat{\sigma}^2}, \\
 F
 &= \frac{\left. \middle(RSS_0-RSS_1\middle) \middle/ \middle(p_1-p_0\middle) \right.}{\left. RSS_1 \middle/ \middle(N-p_1-1\middle) \right.}
-= \frac{\left<q_j, \mathbf{y}\right>}{\hat{\sigma}^2};
+= \frac{\left<q_j, \mathbf{y}\right>^2}{\hat{\sigma}^2};
 \end{align}
 $$
 
@@ -519,7 +519,7 @@ train.data <- data.frame(x)
 train.data$y = y
 
 plot(train.data$x1, train.data$y, main='Confidence Intervals of Cubic of X',
-     xlab='input', ylab='response', lwd=2, cex=1.5)
+     xlab='input', ylab='response', lwd=2, cex=1)
 
 # ------------------------------------------------------------
 # model fitting
@@ -611,9 +611,9 @@ lines(test.data$x1, test.x %*% beta,
 
 In the figure above, the plots are the training data points, the red solid line the true model curve (excluding noise), the green solid line the linear regression fit.
 
-The purple dashed lines denote the lower and upper confidence intervals which are got from the ```lm``` fit. That confidence interval is also calucated in our code and verified against what we got from the ```lm``` fit. Note that we use the percentile of Student's $t$-distribution instead of the percentile of the standard normal distribution in order to accurately match the ```lm``` fit result.
+The purple dashed lines denote the confidence band which is got from the ```lm``` fit. That confidence band is also calculated in our code and verified against what we get from the ```lm``` fit. Note that we use the percentile of Student's $t$-distribution instead of the percentile of the standard normal distribution in order to accurately match the ```lm``` fit result.
 
-The blue dashed lines denote the lower and upper confidence intervals based on the confidence set of $\beta$. It is wider than the normal confidence interval. The dark gray dotted lines are got by using the $\beta$ at the boundary of the confidence set of $\beta$. It can been see that they are well bounded by the blue confidence bands but are not bounded by the purple one.
+The blue dashed lines denote the confidence band based on the confidence set of $\beta$. It is wider than the normal confidence interval. The dark gray dotted lines are got by using the $\beta$ at the boundary of the confidence set of $\beta$. It can been see that they are well bounded by the blue confidence band but are not bounded by the purple one.
 
 The sampling of the boundary $\beta$ is a little bit tricky. We use the SVD of $\mathbf{X}^T\mathbf{X}$ to achieve that.
 
@@ -842,6 +842,83 @@ In order to make the exercise correct, we need to change the exercise by removin
 > ... the parameters $\beta_j$ are each distributed as $N\left(0, \tau^2\right)$, $1 \le j \le p$, independently of one another. ...
 
 Or, equivalently, we keep the assumption that $\beta_0 \sim N\left(0, \tau_0^2\right)$ but with $\tau_0^2$ sufficiently large so that $\sigma^2/\tau_0^2 \rightarrow 0$. Once we make this change, then the solution derivation of **Ex. 3.6** will apply to this exercise exatctly.
+
+---
+
+## Ex. 3.8 qr-svd-relationship
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/2
+Reference | [Weatherwax and Epstein's solution][weatherwax-epstein-solution]
+
+[weatherwax-epstein-solution]: http://waxworksmath.com/Authors/G_M/Hastie/WriteUp/weatherwax_epstein_hastie_solutions_manual.pdf
+
+**Ex. 3.8** Consider the QR decomposition of the uncentered $N \times (p+1)$ matrix $\mathbf{X}$ (whose first column is all ones), and the SVD of the $N \times p$ centered matrix $\tilde{\mathbf{X}}$. Show that $\mathbf{Q}_2$ and $\mathbf{U}$ span the same subspace, where $\mathbf{Q}_2$ is the sub-matrix of $\mathbf{Q}$ with the first column removed. Under what circumstances will they be the same, up to sign flips?
+
+**Proof**
+
+By the definition of QR decomposition, columns of $\mathbf{Q}$ are orthogonal to each other, then $\mathbf{1}$, proportional to the first column $\mathbf{q}_0$ of $\mathbf{Q}$, is orthogonal to the space spaned by $\mathbf{Q}_2$. By the definition of $\tilde{\mathbf{X}}$, the sum of rows of it produces a $p$ row vector of zeros, in other words, $\mathbf{1}$ is orthogonal to the space spaned by $\tilde{\mathbf{X}}$ and hence $\mathbf{U}$. The two are $p$ dimensional subspaces of the column space of $\mathbf{X}$ and they are both orthogonal to the same vector $\mathbf{1}$, then they are the same subspace.
+
+The following is just a rephrasing of [Weatherwax and Epstein's solution][weatherwax-epstein-solution].
+
+Before anwsering the last question, we need to first show that
+
+$$
+\begin{equation}
+\mathbf{Q}_2\mathbf{R}_2 = \mathbf{U}\mathbf{D}\mathbf{V}^T,
+\end{equation}
+$$
+
+where
+
+$$
+\begin{align}
+\mathbf{X} &= \mathbf{Q}\mathbf{R} = \left[\begin{array}{cc} \mathbf{q}_0 & \mathbf{Q}_2 \end{array}\right] \left[\begin{array}{cc} r_{00} & \mathbf{r}_{0-}^T \\ \mathbf{0} & \mathbf{R}_2 \end{array}\right], \\
+\tilde{\mathbf{X}} &= \mathbf{U}\mathbf{D}\mathbf{V}^T.
+\end{align}
+$$
+
+Looking the $j$th vector of $\mathbf{X}$ we can get the values of the first row of $\mathbf{R}$ as below
+
+$$
+\begin{align}
+\mathbf{x}_j
+&= r_{0j}\mathbf{q}_0 + \sum_{k=1}^jr_{kj}\mathbf{q}_k, \\
+\mathbf{1}^T\mathbf{x}_j
+&= r_{0j}\mathbf{1}^T\mathbf{q}_0 + \sum_{k=1}^jr_{kj}\mathbf{1}^T\mathbf{q}_k, \\
+&= \sqrt{N}r_{0j}, \\
+r_{0j} &= \sqrt{N}\bar{\mathbf{x}}_j,
+\end{align}
+$$
+
+where $\mathbf{q}_0 = \mathbf{1}\left/\right.\sqrt{N}$. Then,
+
+$$
+\begin{align}
+\left[\begin{array}{cccc} \mathbf{x}_1 & \mathbf{x}_2 & \cdots & \mathbf{x}_p \end{array}\right]
+&= \mathbf{q}_0\mathbf{r}_{0-}^T + \mathbf{Q}_2\mathbf{R}_2 \\
+&= \left[\begin{array}{cccc} \bar{\mathbf{x}}_1 & \bar{\mathbf{x}}_2 & \cdots & \bar{\mathbf{x}}_p \\ \bar{\mathbf{x}}_1 & \bar{\mathbf{x}}_2 & \cdots & \bar{\mathbf{x}}_p \\ \cdots & \cdots & \cdots & \cdots \\ \bar{\mathbf{x}}_1 & \bar{\mathbf{x}}_2 & \cdots & \bar{\mathbf{x}}_p \end{array}\right] + \mathbf{Q}_2\mathbf{R}_2, \\
+\mathbf{Q}_2\mathbf{R}_2
+&= \tilde{\mathbf{X}} = \mathbf{U}\mathbf{D}\mathbf{V}^T.
+\end{align}
+$$
+
+When $\mathbf{Q}_2$ and $\mathbf{U}$ are the same, up to sign flips and even column permutations, we have $\mathbf{R}_2 = \mathbf{Q}_2^T\mathbf{U}\mathbf{D}\mathbf{V}^T$, where $\mathbf{Q}_2^T\mathbf{U}$ is a row permutation of $\mathrm{diag}\left(e_1, e_2, \cdots, e_p\right)$ where $e_j = 1$ or $e_j = -1$ for $1 \le j \le p$. Because $\mathbf{V}^T$ is row orthogonal, the upper triangular matrix $\mathbf{R}_2$ is also row orthogonal.
+
+If an upper triangular matrix is row orthogonal, then it is diagonal. Let us look at the inner product between the last row vector and any of the rest row vectors, we can find the non-zero $r_{pp}$ will clear all last member of other row vectors.
+
+$$
+\begin{align}
+0 &= \left<\mathbf{r}_p^T,\mathbf{r}_j^T\right> = r_{pp}r_{jp}, \\
+r_{jp} &= 0.
+\end{align}
+$$
+
+Continue this procedure, we can find that all upper triangular entries except the diagonal ones are cleared to zeros.
+
+Finally, we reach the conclusion that $\mathbf{R}_2$ is diagonal if $\mathbf{Q}_2$ and $\mathbf{U}$ are the same, up to sign flips and even column permutations.
 
 ---
 
