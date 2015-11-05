@@ -616,3 +616,63 @@ The purple dashed lines denote the lower and upper confidence intervals which ar
 The blue dashed lines denote the lower and upper confidence intervals based on the confidence set of $\beta$. It is wider than the normal confidence interval. The dark gray dotted lines are got by using the $\beta$ at the boundary of the confidence set of $\beta$. It can been see that they are well bounded by the blue confidence bands but are not bounded by the purple one.
 
 The sampling of the boundary $\beta$ is a little bit tricky. We use the SVD of $\mathbf{X}^T\mathbf{X}$ to achieve that.
+
+---
+
+## Ex. 3.4 least-squares-by-qr
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/1
+
+**Ex. 3.4** Show how the vector of least squares coefficients can be obtained from a single pass of the Gram–Schmidt procedure (Algorithm 3.1). Represent your solution in terms of the QR decomposition of $\mathbf{X}$.
+
+**Solution**
+
+In the beginning, we initalize $\mathbf{z}_0 = \mathbf{x}_0 = \mathbf{1}$. Regressing $\mathbf{x}_1$ on $\mathbf{z}_0$ we get the coefficient $\hat{\gamma}_{01} = \left<\mathbf{z}_0, \mathbf{x}_j\right>\left/\right.\left<\mathbf{z}_0, \mathbf{z}_0\right>$ and the residual $\mathbf{z}_1 = \mathbf{x}_1 - \hat{\gamma}_{01}\mathbf{z}_0$ and hence $\mathbf{x}_1 = \hat{\gamma}_{01}\mathbf{z}_0 + \mathbf{z}_1$. Continue on this procedure, we can get $\mathbf{x}_2 = \hat{\gamma}_{02}\mathbf{z}_0 + \hat{\gamma}_{12}\mathbf{z}_1 + \mathbf{z}_2$, $\mathbf{x}_3 = \hat{\gamma}_{03}\mathbf{z}_0 + \hat{\gamma}_{13}\mathbf{z}_1 + \hat{\gamma}_{23}\mathbf{z}_2 + \mathbf{z}_3$, ..., and $\mathbf{x}_p = \hat{\gamma}_{0p}\mathbf{z}_0 + \hat{\gamma}_{1p}\mathbf{z}_1 + \dots + \hat{\gamma}_{\left(p-1\right)p}\mathbf{z}_{p-1} + \mathbf{z}_p$.
+
+Rewriting equations above with matrix operations we get
+
+$$
+\begin{equation}
+\mathbf{X} = \mathbf{Z}\mathbf{\Gamma},
+\end{equation}
+$$
+
+where $\mathbf{z}_j$ are orthogonal of each other and $\mathbf{\Gamma}$ is an upper triangular matrix with all diagonal entries be 1. It is convenient to make length of the orthogonal vectors be 1, so we do it as
+
+$$
+\begin{align}
+\mathbf{X}
+&= \mathbf{Z}\mathbf{\Gamma} \\
+&= \mathbf{Z}\mathbf{D}^{-1}\mathbf{D}\mathbf{\Gamma} \\
+&= \mathbf{Q}\mathbf{R},
+\end{align}
+$$
+
+where $\mathbf{D}$ is a diagonal matrix with $j$th diagonal entry $D_{jj} = \left\Vert \mathbf{z}_j \right\Vert$. This way, we make $\mathbf{Q}$ an orthogonal matrix. $\mathbf{R}$ is still an upper triangular matrix but its diagonal entry are now $r_{jj} = \left\Vert \mathbf{z}_j \right\Vert$.
+
+The vector of least square coefficients can be represented by $\mathbf{Q}$ and $\mathbf{R}$:
+
+$$
+\begin{align}
+\hat{\beta}
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y} \\
+&= \left(\mathbf{R}^T\mathbf{Q}^T\mathbf{Q}\mathbf{R}\right)^{-1}\mathbf{R}^T\mathbf{Q}^T\mathbf{y} \\
+&= \left(\mathbf{R}^T\mathbf{R}\right)^{-1}\mathbf{R}^T\mathbf{Q}^T\mathbf{y} \\
+&= \mathbf{R}^{-1}\left(\mathbf{R}^T\right)^{-1}\mathbf{R}^T\mathbf{Q}^T\mathbf{y} \\
+&= \mathbf{R}^{-1}\mathbf{Q}^T\mathbf{y}.
+\end{align}
+$$
+
+$\mathbf{R}^{-1}$ is also an upper triangular matrix and its entries can be sovled by
+
+$$
+\begin{align}
+r_{jj}^{-} &= \frac{1}{r_{jj}} \\
+r_{kj}^{-} &= -\frac{\sum_{l=k+1}^j r_{kl}r_{lj}^{-}}{r_{kk}},\;k=j-1,\dots,0;
+\end{align}
+$$
+
+starting from column $0$ to column $p$ and for column $j$ starting from $r_{jj}^{-}$ to $r_{0j}^{-}$.
