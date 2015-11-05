@@ -676,3 +676,78 @@ r_{kj}^{-} &= -\frac{\sum_{l=k+1}^j r_{kl}r_{lj}^{-}}{r_{kk}},\;k=j-1,\dots,0;
 $$
 
 starting from column $0$ to column $p$ and for column $j$ starting from $r_{jj}^{-}$ to $r_{0j}^{-}$.
+
+---
+
+## Ex. 3.5 ridge-inputs-centered
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/2
+
+**Ex. 3.5** Consider the ridge regression problem (3.41). Show that this problem is equivalent to the problem
+
+$$
+\begin{equation}
+\hat{\beta}^c = \mathop{\mathrm{argmin}}_{\beta^c}\left\{\sum_{i=1}^N\left[y_i-\beta_0^c-\sum_{j=1}^p\left(x_{ij}-\bar{x}_j\right)\beta_j^c\right]^2 + \lambda\sum_{j=1}^p{\beta_j^c}^2\right\}.
+\end{equation}
+$$
+
+Give the correspondence between $\beta^c$ and the original $\beta$ in (3.41). Characterize the solution to this modified criterion. Show that a similar result holds for the lasso.
+
+**Solution**
+
+Rewriting the optimizating criterion
+
+$$
+\begin{align}
+RSS^c
+&= \sum_{i=1}^N\left[y_i-\beta_0^c-\sum_{j=1}^p\left(x_{ij}-\bar{x}_j\right)\beta_j^c\right]^2 + \lambda\sum_{j=1}^p{\beta_j^c}^2 \\
+&= \sum_{i=1}^N\left[y_i-\left(\beta_0^c-\sum_{j=1}^p\bar{x}_j\beta_j^c\right)-\sum_{j=1}^px_{ij}\beta_j^c\right]^2 + \lambda\sum_{j=1}^p{\beta_j^c}^2,
+\end{align}
+$$
+
+we can see that the correspondence between $\beta^c$ and the original $\beta$ in (3.41) is
+
+$$
+\begin{equation}
+\left\{
+\begin{aligned}
+\beta_j &= \beta_j^c, & 1 \le j \le p \\
+\beta_0 &= \beta_0^c-\sum_{j=1}^p\bar{x}_j\beta_j^c,
+\end{aligned}
+\right.
+\end{equation}
+$$
+
+or equivalently
+
+$$
+\begin{equation}
+\left\{
+\begin{aligned}
+\beta_j^c &= \beta_j, & 1 \le j \le p \\
+\beta_0^c &= \beta_0+\sum_{j=1}^p\bar{x}_j\beta_j.
+\end{aligned}
+\right.
+\end{equation}
+$$
+
+We now proceed to show that $\beta_0^c=\bar{y}=\frac{1}{N}\sum_1^Ny_i$ as stated on page 64. Differentiating $RSS^c$ with respect to $\beta_0^c$ and setting the derivative to zero,
+
+$$
+\begin{align}
+0
+&= \frac{\partial{RSS^c}}{\partial{\beta_0^c}} \\
+&= 2\sum_{i=1}^N\left[\beta_0^c-y_i+\sum_{j=1}^p\left(x_{ij}-\bar{x}_j\right)\beta_j^c\right] \\
+&= 2N\beta_0^c - 2\sum_{i=1}^Ny_i + 2\sum_{i=1}^N\sum_{j=1}^p\left(x_{ij}-\bar{x}_j\right)\beta_j^c \\
+&= 2N\beta_0^c - 2\sum_{i=1}^Ny_i + 2\sum_{j=1}^p\beta_j^c\sum_{i=1}^N\left(x_{ij}-\bar{x}_j\right) \\
+&= 2N\beta_0^c - 2\sum_{i=1}^Ny_i + 2\sum_{j=1}^p\beta_j^c\times0 \\
+&= 2N\beta_0^c - 2\sum_{i=1}^Ny_i,
+\end{align}
+$$
+
+we then reach the conclusion we want to draw: $\beta_0^c=\bar{y}=\frac{1}{N}\sum_1^Ny_i$.
+
+Apparently, a similar result holds for the lasso.
