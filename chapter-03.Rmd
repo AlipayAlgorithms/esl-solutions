@@ -751,3 +751,67 @@ $$
 we then reach the conclusion we want to draw: $\beta_0^c=\bar{y}=\frac{1}{N}\sum_1^Ny_i$.
 
 Apparently, a similar result holds for the lasso.
+
+---
+
+## Ex. 3.6 ridge-as-posterior-mean
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/2
+Reference | [Wikipedia: Multivariate normal distribution][wikipedia-multivariate-normal-distribution]
+
+[wikipedia-multivariate-normal-distribution]: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
+
+**Ex. 3.6** Show that the ridge regression estimate is the mean (and mode) of the posterior distribution, under a Gaussian prior $\beta \sim N\left(0, \tau^2I\right)$, and Gaussian sampling model $\mathbf{y} \sim N\left(\mathbf{X}β, \sigma^2I\right)$. Find the relationship between the regularization parameter $\lambda$ in the ridge formula, and the variances $\tau^2$ and $\sigma^2$.
+
+**Proof**
+
+First we calculate the log likelihood of the training data:
+
+$$
+\begin{align}
+\mathcal{L}\left(\beta\right)
+&= \left(2\pi\right)^{-\frac{N}{2}}\left|\sigma^2I\right|^{-\frac{1}{2}} \mathrm{exp}\left(-\frac{1}{2}\left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\sigma^2I\right)^{-1}\left(\mathbf{y}-\mathbf{X}\beta\right)\right) \\
+&= \left(2\pi\right)^{-\frac{N}{2}}\sigma^{-N} \mathrm{exp}\left(-\frac{1}{2\sigma^2}\left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right)\right), \\
+-\log\mathcal{L}\left(\beta\right)
+&= \frac{1}{2\sigma^2}\left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right) + C_1.
+\end{align}
+$$
+
+The minus log prior of $\beta$ can also be calculated as:
+
+$$
+\begin{align}
+p\left(\beta\right)
+&= \left(2\pi\right)^{-\frac{p}{2}}\left|\tau^2I\right|^{-\frac{1}{2}} \mathrm{exp}\left(-\frac{1}{2}\beta^T\left(\tau^2I\right)^{-1}\beta\right) \\
+&= \left(2\pi\right)^{-\frac{p}{2}}\tau^{-p} \mathrm{exp}\left(-\frac{1}{2\tau^2}\beta^T\beta\right), \\
+-\log p\left(\beta\right)
+&= \frac{1}{2\tau^2}\beta^T\beta + C_2.
+\end{align}
+$$
+
+The posterior density function is proportional to the likelihood of the training data multiplying the prior density function,
+
+$$
+\begin{equation}
+p\left(\beta|\mathbf{y}\right) \propto \mathcal{L}\left(\beta\right) \times p\left(\beta\right),
+\end{equation}
+$$
+
+hence the minus log posterior density function will be
+
+$$
+\begin{align}
+-\log p\left(\beta|\mathbf{y}\right)
+&= -\log\mathcal{L}\left(\beta\right) -\log p\left(\beta\right) + C_3 \\
+&= \frac{1}{2\sigma^2}\left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right) + \frac{1}{2\tau^2}\beta^T\beta + C_1 + C_2 + C_3 \\
+&= \frac{1}{2\sigma^2}\left[\left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right) + \frac{\sigma^2}{\tau^2}\beta^T\beta\right] + C_4 \\
+&= \frac{1}{2\sigma^2}\left[\left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right) + \lambda\beta^T\beta\right] + C_4.
+\end{align}
+$$
+
+Therefore, minimizing the ridge loss function in (3.43) is equivalent to maximizing the log posterior and the relationship between $\lambda$, $\sigma^2$ and $\tau^2$ is $\lambda=\sigma^2\left/\right.\tau^2$.
+
+The mode (maximun) of the posterior distribution is also the mean, because the log likelihood is a quadratic function of $\beta$.
