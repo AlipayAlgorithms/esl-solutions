@@ -859,3 +859,32 @@ In addition to QR decomputation, the main computation costs which the step $k$ o
 
 1. Correlations between $p-k+1$ candidate variables and the current residual $\mathbf{r}$ as in $\eqref{eq:ex-3.9-correlation}$. In fact we do not need to divide the covariance by $\left\Vert\mathbf{r}\right\Vert$ because we only need to know the order. Also, standardizing the inputs beforehand can also save many redundant computations.
 1. Inner products between $\mathbf{y}$ and the newly introduced $\mathbf{q}_j$, scala-vector multiplications and vector summations as in $\eqref{eq:ex-3.9-residual}$.
+
+---
+
+## Ex. 3.10 backward-stepwise-regression
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/4
+
+**Ex. 3.10** Backward stepwise regression. Suppose we have the multiple regression fit of $\mathbf{y}$ on $\mathbf{X}$, along with the standard errors and Z-scores as in Table 3.2. We wish to establish which variable, when dropped, will increase the residual sum-of-squares the least. How would you do this?
+
+**Solution**
+
+For conviniences we paste Table 3.2 as below.
+
+Term | Coefficient | Std. Error | Z Score
+--- | --- | --- | ---
+Intercept | 2.46 | 0.09 | 27.60
+lcavol | 0.68 | 0.13 | 5.37
+lweight | 0.26 | 0.10 | 2.75
+age | −0.14 | 0.10 | −1.40
+lbph | 0.21 | 0.10 | 2.06
+svi | 0.31 | 0.12 | 2.47
+lcp | −0.29 | 0.15 | −1.87
+gleason | −0.02 | 0.15 | −0.15
+pgg45 | 0.27 | 0.15 | 1.74
+
+On page (49) of the book and also in solution to Ex. 3.1, we have shown that the $F$ statistic (3.13) for dropping a single coefficient from a model is equal to the square of the corresponding $z$-score (3.12), where the $F$ statistic for dropping a single coefficient is the RSS increament divided by $\hat{\sigma}^2$. Therefore, for backward stepwise regression we should drop the variable with the smallest absolute $z$-score. In our case in Table 3.2, it is the variable **gleason**.
