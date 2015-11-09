@@ -815,3 +815,47 @@ $$
 Therefore, minimizing the ridge loss function in (3.43) is equivalent to maximizing the log posterior and the relationship between $\lambda$, $\sigma^2$ and $\tau^2$ is $\lambda=\sigma^2\left/\right.\tau^2$.
 
 The mode (maximun) of the posterior distribution is also the mean, because the log likelihood is a quadratic function of $\beta$.
+
+---
+
+## Ex. 3.9 forward-stepwise-regression
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/2
+
+**Ex. 3.9** _Forward stepwise regression._ Suppose we have the QR decomposition for the $N \times q$ matrix $\mathbf{X}_1$ in a multiple regression problem with response $\mathbf{y}$, and we have an additional $p−q$ predictors in the matrix $\mathbf{X}_2$. Denote the current residual by $\mathbf{r}$. We wish to establish which one of these additional variables will reduce the residual-sum-of squares the most when included with those in $\mathbf{X}_1$. Describe an efficient procedure for doing this.
+
+**Solution**
+
+Under current QR decomposition
+
+$$
+\begin{equation}
+\mathbf{X}_1 = \mathbf{Q}_1\mathbf{R}_1,
+\end{equation}
+$$
+
+the current residual is
+
+$$
+\begin{equation}
+\label{eq:ex-3.9-residual}
+\mathbf{r} = \mathbf{y} - \mathbf{Q}_1\mathbf{Q}_1^T\mathbf{y}.
+\end{equation}
+$$
+
+The additional variable in $\mathbf{X}_2$ which will reduce the RSS the most is the one whose correlation with $\mathbf{r}$ is the biggest:
+
+$$
+\begin{equation}
+\label{eq:ex-3.9-correlation}
+\rho_{\mathbf{r},\mathbf{x}_j} = \frac{\left<\mathbf{r}-\bar{\mathbf{r}}, \mathbf{x}_j-\bar{\mathbf{x}}_j\right>}{\left.\middle\Vert\mathbf{r}\middle\Vert \cdot \middle\Vert\mathbf{x}_j\middle\Vert\right.}.
+\end{equation}
+$$
+
+In addition to QR decomputation, the main computation costs which the step $k$ of this procedure involves are:
+
+1. Correlations between $p-k+1$ candidate variables and the current residual $\mathbf{r}$ as in $\eqref{eq:ex-3.9-correlation}$. In fact we do not need to divide the covariance by $\left\Vert\mathbf{r}\right\Vert$ because we only need to know the order. Also, standardizing the inputs beforehand can also save many redundant computations.
+1. Inner products between $\mathbf{y}$ and the newly introduced $\mathbf{q}_j$, scala-vector multiplications and vector summations as in $\eqref{eq:ex-3.9-residual}$.
