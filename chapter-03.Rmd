@@ -888,3 +888,63 @@ gleason | −0.02 | 0.15 | −0.15
 pgg45 | 0.27 | 0.15 | 1.74
 
 On page (49) of the book and also in solution to Ex. 3.1, we have shown that the $F$ statistic (3.13) for dropping a single coefficient from a model is equal to the square of the corresponding $z$-score (3.12), where the $F$ statistic for dropping a single coefficient is the RSS increament divided by $\hat{\sigma}^2$. Therefore, for backward stepwise regression we should drop the variable with the smallest absolute $z$-score. In our case in Table 3.2, it is the variable **gleason**.
+
+---
+
+## Ex. 3.14 pls-when-orthogonal
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/7
+
+**Ex. 3.14** Show that in the orthogonal case, PLS stops after $m=1$ steps, because subsequent $\hat{\phi}_{mj}$ in step 2 in Algorithm 3.3 are zero.
+
+**Proof**
+
+Rewriting Algorithm 3.3 using vector and matrix operations we get
+
+$$
+\begin{align}
+\hat{\phi}_{mj} &= {\mathbf{x}_j^{\left(m-1\right)}}^T\mathbf{y}, \\
+\hat{\phi}_m &= {\mathbf{X}^{\left(m-1\right)}}^T\mathbf{y}, \\
+\mathbf{z}_m &= \sum_{j=1}^p\hat{\phi}_{mj}\mathbf{x}_j^{\left(m-1\right)} = \sum_{j=1}^p\mathbf{x}_j^{\left(m-1\right)}{\mathbf{x}_j^{\left(m-1\right)}}^T\mathbf{y} = \mathbf{X}^{\left(m-1\right)}{\mathbf{X}^{\left(m-1\right)}}^T\mathbf{y}, \\
+\hat{\theta}_m &= \frac{\left<\mathbf{z}_m,\mathbf{y}\right>}{\left<\mathbf{z}_m,\mathbf{z}_m\right>} = \frac{\mathbf{y}^T\mathbf{X}^{\left(m-1\right)}{\mathbf{X}^{\left(m-1\right)}}^T\mathbf{y}}{\mathbf{y}^T\mathbf{X}^{\left(m-1\right)}{\mathbf{X}^{\left(m-1\right)}}^T\mathbf{X}^{\left(m-1\right)}{\mathbf{X}^{\left(m-1\right)}}^T\mathbf{y}}, \\
+\hat{\mathbf{y}}^{\left(m\right)} &= \hat{\mathbf{y}}^{\left(m-1\right)} + \hat{\theta}_m\mathbf{z}_m, \\
+\mathbf{x}_j^{\left(m\right)} &= \mathbf{x}_j^{\left(m-1\right)} - \frac{\left<\mathbf{z}_m,\mathbf{x}_j^{\left(m-1\right)}\right>}{\left<\mathbf{z}_m,\mathbf{z}_m\right>}\mathbf{z}_m = \mathbf{x}_j^{\left(m-1\right)} - \frac{\mathbf{z}_m^T\mathbf{x}_j^{\left(m-1\right)}}{\mathbf{z}_m^T\mathbf{z}_m}\mathbf{z}_m, \\
+\mathbf{X}^{\left(m\right)} &= \mathbf{X}^{\left(m-1\right)} - \frac{\mathbf{z}_m\mathbf{z}_m^T\mathbf{X}^{\left(m-1\right)}}{\mathbf{z}_m^T\mathbf{z}_m}.
+\end{align}
+$$
+
+In $m=1$ steps, when the columns of $\mathbf{X}^{\left(0\right)}$ are orthogonal, i.e., ${\mathbf{X}^{\left(0\right)}}^T\mathbf{X}^{\left(0\right)} = \mathbf{I}$, then
+
+$$
+\begin{align}
+\hat{\theta}_1
+&= \frac{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}}{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}} \\
+&= \frac{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}}{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}} \\
+&= 1, \\
+\mathbf{X}^{\left(1\right)}
+&= \mathbf{X}^{\left(0\right)} - \frac{\mathbf{z}_1\mathbf{z}_1^T\mathbf{X}^{\left(0\right)}}{\mathbf{z}_1^T\mathbf{z}_1} \\
+&= \mathbf{X}^{\left(0\right)} - \frac{\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{X}^{\left(0\right)}}{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}} \\
+&= \mathbf{X}^{\left(0\right)} - \frac{\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}\mathbf{y}^T\mathbf{X}^{\left(0\right)}}{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}}, \\
+\hat{\phi}_2
+&= {\mathbf{X}^{\left(1\right)}}^T\mathbf{y} \\
+&= {\mathbf{X}^{\left(0\right)}}^T\mathbf{y} - \frac{{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}}{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}} \\
+&= {\mathbf{X}^{\left(0\right)}}^T\mathbf{y} - \frac{{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}\left(\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}\right)}{\mathbf{y}^T\mathbf{X}^{\left(0\right)}{\mathbf{X}^{\left(0\right)}}^T\mathbf{y}} \\
+&= {\mathbf{X}^{\left(0\right)}}^T\mathbf{y} - {\mathbf{X}^{\left(0\right)}}^T\mathbf{y} \\
+&= \mathbf{0}.
+\end{align}
+$$
+
+PLS will stop after $m=1$ steps because $\hat{\phi}_2=\mathbf{0}$.
+
+Further, because $\hat{\theta}_1=1$, then
+
+$$
+\begin{equation}
+\hat{\mathbf{y}}=\mathbf{z}_1=\mathbf{X}\mathbf{X}^T\mathbf{y},
+\end{equation}
+$$
+
+the PLS estimate is $\mathbf{X}^T\mathbf{y}$, which equals to the least squares estimate $\left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}=\mathbf{X}^T\mathbf{y}$.
