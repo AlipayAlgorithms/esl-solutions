@@ -818,6 +818,33 @@ The mode (maximun) of the posterior distribution is also the mean, because the l
 
 ---
 
+## Ex. 3.7 suspicious-beta-0-penalty
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/5
+
+**Ex. 3.7** Assume $y_i \sim N\left(\beta_0 + x_i^T\beta, \sigma^2\right)$, $i=1,2,\dots,N$, and the parameters $\beta_j$ are each distributed as $N\left(0, \tau^2\right)$, independently of one another. Assuming $\sigma^2$ and $\tau^2$ are known, show that the (minus) log-posterior density of $\beta$ is proportional to $\sum_{i=1}^N\left(y_i − \beta_0 − \sum_jx_{ij}\beta_j\right)^2 + \lambda\sum_{j=1}\beta_j^2$ where $\lambda = \sigma^2/\tau^2$.
+
+**Solution**
+
+We suspect that this exercise has something wrong.
+
+The difference between **Ex. 3.6** and **Ex. 3.7**:
+
+1. **Ex. 3.6**: As shown in **Ex. 3.5**, when we center the inputs the intercept fit is just the average of the response $\beta_0^c=\bar{y}=\frac{1}{N}\sum_1^Ny_i$, and we can proceed to fit the remaining coefficients all with shrinkage. We think that is what **Ex. 3.6** is based on.
+
+1. **Ex. 3.7**: The original inputs are not centered and the penalty is not applied to $\beta_0$. However it seems that $\beta_0$ also follows a prior normal distribution with variance $\tau^2$. That is contradictory.
+
+In order to make the exercise correct, we need to change the exercise by removing the prior distribution of $\beta_0$ like this:
+
+> ... the parameters $\beta_j$ are each distributed as $N\left(0, \tau^2\right)$, $1 \le j \le p$, independently of one another. ...
+
+Or, equivalently, we keep the assumption that $\beta_0 \sim N\left(0, \tau_0^2\right)$ but with $\tau_0^2$ sufficiently large so that $\sigma^2/\tau_0^2 \rightarrow 0$. Once we make this change, then the solution derivation of **Ex. 3.6** will apply to this exercise exatctly.
+
+---
+
 ## Ex. 3.9 forward-stepwise-regression
 
 Item | Description
