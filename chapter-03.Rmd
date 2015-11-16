@@ -918,6 +918,40 @@ On page (49) of the book and also in solution to Ex. 3.1, we have shown that the
 
 ---
 
+## Ex. 3.12 ridge-by-artificial-data
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/5
+
+**Ex. 3.12** Show that the ridge regression estimates can be obtained by ordinary least squares regression on an augmented data set. We augment the centered matrix $\mathbf{X}$ with $p$ additional rows $\sqrt{\lambda}\mathbf{I}$, and augment $\mathbf{y}$ with $p$ zeros. By introducing artificial data having response value zero, the fitting procedure is forced to shrink the coefficients toward zero. This is related to the idea of _hints_ due to Abu-Mostafa (1995), where model constraints are implemented by adding artificial data examples that satisfy them.
+
+**Proof**
+
+The proof is quite straightforward by rewriting (3.43) on page 64:
+
+$$
+\begin{align}
+RSS\left(\lambda\right)
+&= \left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right) + \lambda\beta^T\beta \\
+&= \left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right) + \left(\sqrt{\lambda}\beta\right)^T\left(\sqrt{\lambda}\beta\right) \\
+&= \left(\mathbf{y}-\mathbf{X}\beta\right)^T\left(\mathbf{y}-\mathbf{X}\beta\right) + \left(\mathbf{0} - \sqrt{\lambda}\mathbf{I}\beta\right)^T\left(\mathbf{0} - \sqrt{\lambda}\mathbf{I}\beta\right) \\
+&= \left(\mathbf{y}_+-\mathbf{X}_+\beta\right)^T\left(\mathbf{y}_+-\mathbf{X}_+\beta\right),
+\end{align}
+$$
+
+where
+
+$$
+\begin{align}
+\mathbf{y}_+ &= \left[\begin{array}{c} \mathbf{y} \\ \mathbf{0} \end{array}\right] \\
+\mathbf{X}_+ &= \left[\begin{array}{c} \mathbf{X} \\ \sqrt{\lambda}\mathbf{I} \end{array}\right].
+\end{align}
+$$
+
+---
+
 ## Ex. 3.14 pls-when-orthogonal
 
 Item | Description
