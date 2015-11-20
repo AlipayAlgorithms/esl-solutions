@@ -952,6 +952,118 @@ $$
 
 ---
 
+## Ex. 3.13 pcr-as-x-coefficients
+
+Item | Description
+--- | ---
+Authors | [PengjuYan](https://github.com/PengjuYan)
+Date | 2015/11/5
+
+**Ex. 3.13** Derive the expression (3.62), and show that $\hat{\beta}^{\mathrm{pcr}}\left(p\right) = \hat{\beta}^{\mathrm{ls}}$.
+
+**Proof**
+
+Similar to what we have shown in **Ex. 3.5**, when the input variables are centered the intercept fit is the mean of the response variable. We just need to fit the remaining coefficients. The SVD of the $N \times p$ matrix $\mathbf{X}$ is $\mathbf{X} = \mathbf{U}\mathbf{D}\mathbf{V}^T$, the principal component regression fits the model by considering only the first $M$ derived input columns $\mathbf{z}_m = \mathbf{X}v_m$, $M \le p$, $1 \le m \le M$. The coefficients of $\mathbf{z}_m = \mathbf{X}v_m$ are given by $\hat{\theta}_m = \left<\mathbf{z}_m, \mathbf{y}\right> \left/\right. \left<\mathbf{z}_m, \mathbf{z}_m\right>$.
+
+What we need to prove is that the solution of
+
+$$
+\begin{equation}
+\hat{\mathbf{y}}_{\left(M\right)}^{\mathrm{pcr}} = \bar{y}\mathbf{1}+\sum_{m=1}^M\hat{\theta}_m\mathbf{z}_m
+\end{equation}
+$$
+
+can be expressed in terms of coefficients of the $\mathbf{x}_j$:
+
+$$
+\begin{equation}
+\label{eq:ex-3.12-pcr-coefficients}
+\hat{\beta}^{\mathrm{pcr}}\left(M\right) = \sum_{m=1}^M\hat{\theta}_mv_m.
+\end{equation}
+$$
+
+Let's simplify the terms:
+
+$$
+\begin{align}
+\mathbf{z}_m &= \mathbf{X}v_m = \mathbf{U}\mathbf{D}\mathbf{V}^Tv_m = d_mu_m, \\
+\hat{\theta}_m &= \frac{\left<\mathbf{z}_m, \mathbf{y}\right>}{\left<\mathbf{z}_m, \mathbf{z}_m\right>} = \frac{\mathbf{z}_m^T\mathbf{y}}{\mathbf{z}_m^T\mathbf{z}_m} = \frac{d_mu_m^T\mathbf{y}}{d_m^2u_m^Tu_m} = \frac{1}{d_m}u_m^T\mathbf{y}, \\
+\sum_{m=1}^M\hat{\theta}_m\mathbf{z}_m &= \sum_{m=1}^M\left(\frac{1}{d_m}u_m^T\mathbf{y}\right)\left(d_mu_m\right) = \sum_{m=1}^Mu_mu_m^T\mathbf{y} = \mathbf{U}_M\mathbf{U}_M^T\mathbf{y}, \\
+\end{align}
+$$
+
+where $d_m$ is the $d$th diagonal entry of $\mathbf{D}$, and $\mathbf{U}_M$ is a $N \times M$ matrix containing the first left $M$ columns of $\mathbf{U}$.
+
+Continue on simplifying $\eqref{eq:ex-3.12-pcr-coefficients}$ we get
+
+$$
+\begin{equation}
+\sum_{m=1}^M\hat{\theta}_mv_m = \sum_{m=1}^M\left(\frac{1}{d_m}u_m^T\mathbf{y}\right)v_m = \sum_{m=1}^M\frac{1}{d_m}v_mu_m^T\mathbf{y} = \mathbf{V}_M\mathbf{D}_M^{-1}\mathbf{U}_M^T\mathbf{y},
+\end{equation}
+$$
+
+where $\mathbf{V}_M$ denotes a $p \times M$ matrix containing the first left $M$ columns of $\mathbf{V}$, and $\mathbf{D}_M$ denotes a $M \times M$ diagonal matrix containing the first $M$ diagonal entries of $\mathbf{D}$.
+
+Left multiplying the coefficients (yet to be proved) by the inputs matrix,
+
+$$
+\begin{align}
+\mathbf{X}\sum_{m=1}^M\hat{\theta}_mv_m
+&= \mathbf{X}\mathbf{V}_M\mathbf{D}_M^{-1}\mathbf{U}_M^T\mathbf{y} \\
+&= \mathbf{U}\mathbf{D}\mathbf{V}^T\mathbf{V}_M\mathbf{D}_M^{-1}\mathbf{U}_M^T\mathbf{y} \\
+&= \mathbf{U}\mathbf{D} \left[\begin{array}{c} \mathbf{I} \\ \mathbf{0} \end{array}\right] \mathbf{D}_M^{-1}\mathbf{U}_M^T\mathbf{y} \\
+&= \mathbf{U} \left[\begin{array}{c} \mathbf{D}_M \\ \mathbf{0} \end{array}\right] \mathbf{D}_M^{-1}\mathbf{U}_M^T\mathbf{y} \\
+&= \mathbf{U} \left[\begin{array}{c} \mathbf{I} \\ \mathbf{0} \end{array}\right] \mathbf{U}_M^T\mathbf{y} \\
+&= \mathbf{U}_M\mathbf{U}_M^T\mathbf{y} \\
+&= \sum_{m=1}^M\hat{\theta}_m\mathbf{z}_m,
+\end{align}
+$$
+
+we find that
+
+$$
+\begin{align}
+\hat{\mathbf{y}}_{\left(M\right)}^{\mathrm{pcr}}
+&= \bar{y}\mathbf{1}+\sum_{m=1}^M\hat{\theta}_m\mathbf{z}_m \\
+&= \bar{y}\mathbf{1}+\mathbf{X}\sum_{m=1}^M\hat{\theta}_mv_m,
+\end{align}
+$$
+
+hence the principal component regression coefficients of $\mathbf{z}_m$ can be represented by the coefficients of $\mathbf{x}_j$ as:
+
+$$
+\begin{equation}
+\label{eq:ex-3.12-coefficients-by-matrix}
+\hat{\beta}^{\mathrm{pcr}}\left(M\right) = \sum_{m=1}^M\hat{\theta}_mv_m = \mathbf{V}_M\mathbf{D}_M^{-1}\mathbf{U}_M^T\mathbf{y}.
+\end{equation}
+$$
+
+Under SVD representation, the least square model fit is
+
+$$
+\begin{align}
+\hat{\beta}^{\mathrm{ls}}
+&= \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y} \\
+&= \left(\mathbf{V}\mathbf{D}\mathbf{U}^T\mathbf{U}\mathbf{D}\mathbf{V}^T\right)^{-1}\mathbf{V}\mathbf{D}\mathbf{U}^T\mathbf{y} \\
+&= \left(\mathbf{V}\mathbf{D}^2\mathbf{V}^T\right)^{-1}\mathbf{V}\mathbf{D}\mathbf{U}^T\mathbf{y} \\
+&= \mathbf{V}\mathbf{D}^{-2}\mathbf{V}^T\mathbf{V}\mathbf{D}\mathbf{U}^T\mathbf{y} \\
+&= \mathbf{V}\mathbf{D}^{-2}\mathbf{D}\mathbf{U}^T\mathbf{y} \\
+&= \mathbf{V}\mathbf{D}^{-1}\mathbf{U}^T\mathbf{y}.
+\end{align}
+$$
+
+Compare with $\eqref{eq:ex-3.12-coefficients-by-matrix}$, we get the fact that
+
+$$
+\begin{equation}
+\hat{\beta}^{\mathrm{pcr}}\left(p\right) = \hat{\beta}^{\mathrm{ls}}.
+\end{equation}
+$$
+
+Q.E.D.
+
+---
+
 ## Ex. 3.14 pls-when-orthogonal
 
 Item | Description
